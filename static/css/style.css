@@ -127,3 +127,10 @@ a.card:hover { border-color: var(--brand); transform: translateY(-2px); }
   .file { grid-template-columns: 1fr auto; }
   .file__size { display: none; }
 }
+
+/* tool options (pages, angle, level, text) */
+.options { display: grid; gap: 16px; margin-bottom: 20px; }
+.option label { display: block; font-weight: 600; margin-bottom: 6px; }
+.option input, .option select { width: 100%; padding: 12px 14px; font: 500 17px var(--font-body); color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: 10px; }
+.option input:focus, .option select:focus { outline: 3px solid var(--accent); outline-offset: 1px; border-color: var(--brand); }
+.option .help { margin: 6px 0 0; font-size: 14px; color: var(--ink-soft); }

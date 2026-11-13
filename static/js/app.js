@@ -16,26 +16,48 @@ const ICONS = {
 const icon = name =>
   `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]}</svg>`;
 
-// ---- tools: add `api` to a tool when its backend route is ready ----
+// ---- tools ----
+// A tool with an `api` object is live. Fields:
+//   endpoint, accept (extensions), multiple, min, need (message when too few files),
+//   button, out or suffix (download name), compare (show size reduction), options[]
 const GROUPS = { all: "All", organize: "Organize", convert: "Convert", edit: "Edit", security: "Security" };
 
 const TOOLS = [
   { id: "merge", name: "Merge PDF", group: "organize", icon: "merge",
     desc: "Combine several PDF files into one, in the order you choose.",
-    api: { endpoint: "/api/merge", accept: ".pdf", multiple: true, min: 2, out: "merged.pdf", button: "Merge PDF", noun: "PDF files" } },
-  { id: "split", name: "Extract pages", group: "organize", icon: "split", desc: "Keep only the pages you need from a PDF." },
-  { id: "rotate", name: "Rotate PDF", group: "organize", icon: "rotate", desc: "Turn pages the right way up." },
-  { id: "compress", name: "Compress PDF", group: "organize", icon: "compress", desc: "Make a PDF smaller for email and uploads." },
-  { id: "pdf2img", name: "PDF to images", group: "convert", icon: "image", desc: "Save every page as a PNG image." },
-  { id: "img2pdf", name: "Images to PDF", group: "convert", icon: "image", desc: "Put JPG and PNG images into one PDF." },
+    api: { endpoint: "/api/merge", accept: ".pdf", multiple: true, min: 2, need: "Add at least 2 PDF files.", out: "merged.pdf", button: "Merge PDF" } },
+  { id: "split", name: "Extract pages", group: "organize", icon: "split",
+    desc: "Keep only the pages you need from a PDF.",
+    api: { endpoint: "/api/split", accept: ".pdf", multiple: false, min: 1, need: "Add a PDF file.", suffix: "-pages.pdf", button: "Extract pages",
+      options: [{ name: "pages", label: "Pages to keep", type: "text", value: "1", help: "Example: 1-3,5 keeps pages 1, 2, 3 and 5." }] } },
+  { id: "rotate", name: "Rotate PDF", group: "organize", icon: "rotate",
+    desc: "Turn all pages of a PDF the right way up.",
+    api: { endpoint: "/api/rotate", accept: ".pdf", multiple: false, min: 1, need: "Add a PDF file.", suffix: "-rotated.pdf", button: "Rotate PDF",
+      options: [{ name: "angle", label: "Rotation", type: "select", choices: [["90", "90° clockwise"], ["180", "180°"], ["270", "90° counter-clockwise"]] }] } },
+  { id: "compress", name: "Compress PDF", group: "organize", icon: "compress",
+    desc: "Make a PDF smaller for email and uploads.",
+    api: { endpoint: "/api/compress", accept: ".pdf", multiple: false, min: 1, need: "Add a PDF file.", suffix: "-compressed.pdf", button: "Compress PDF", compare: true,
+      options: [{ name: "level", label: "Compression level", type: "select", value: "medium",
+        choices: [["low", "Low: best quality"], ["medium", "Medium: recommended"], ["high", "High: smallest file"]],
+        help: "Works best on PDFs with photos or scans. Text-only PDFs are already small." }] } },
+  { id: "pdf2img", name: "PDF to images", group: "convert", icon: "image",
+    desc: "Save every page as an image. Up to 50 pages.",
+    api: { endpoint: "/api/pdf2img", accept: ".pdf", multiple: false, min: 1, need: "Add a PDF file.", suffix: "-images.zip", button: "Convert to images",
+      options: [{ name: "fmt", label: "Image format", type: "select", choices: [["png", "PNG: sharp"], ["jpg", "JPG: smaller files"]] }] } },
+  { id: "img2pdf", name: "Images to PDF", group: "convert", icon: "image",
+    desc: "Put JPG and PNG images into one PDF, one image per page.",
+    api: { endpoint: "/api/img2pdf", accept: ".jpg,.jpeg,.png", multiple: true, min: 1, need: "Add at least 1 JPG or PNG image.", out: "images.pdf", button: "Create PDF" } },
   { id: "uzbek", name: "Uzbek alphabet converter", group: "convert", icon: "text", desc: "Convert text between Uzbek Cyrillic and Latin." },
-  { id: "watermark", name: "Add watermark", group: "edit", icon: "drop", desc: "Stamp text across every page." },
+  { id: "watermark", name: "Add watermark", group: "edit", icon: "drop",
+    desc: "Stamp text across every page of a PDF.",
+    api: { endpoint: "/api/watermark", accept: ".pdf", multiple: false, min: 1, need: "Add a PDF file.", suffix: "-watermarked.pdf", button: "Add watermark",
+      options: [{ name: "text", label: "Watermark text", type: "text", value: "Nexuz", help: "Latin letters and numbers. Marks like ğ or ş are not supported yet." }] } },
   { id: "protect", name: "Protect PDF", group: "security", icon: "lock", desc: "Lock a PDF with a password." },
   { id: "unlock", name: "Unlock PDF", group: "security", icon: "unlock", desc: "Remove the password from your own PDF." },
 ];
 
 const $ = s => document.querySelector(s);
-const state = { group: "all", tool: null, files: [] };
+const state = { group: "all", tool: null, files: [], total: 0 };
 
 // ---- home: filters + grid ----
 function renderFilters() {
@@ -73,7 +95,7 @@ function renderGrid() {
 }
 
 // ---- tool page ----
-const fmtSize = bytes => bytes < 1048576 ? (bytes / 1024).toFixed(0) + " KB" : (bytes / 1048576).toFixed(2) + " MB";
+const fmtSize = bytes => bytes < 1048576 ? Math.max(1, Math.round(bytes / 1024)) + " KB" : (bytes / 1048576).toFixed(2) + " MB";
 
 function setStatus(msg, isError = false) {
   const s = $("#status");
@@ -93,9 +115,42 @@ function iconButton(label, text, disabled, onClick, cls = "") {
   return b;
 }
 
+function renderOptions(tool) {
+  const box = $("#options");
+  box.replaceChildren();
+  (tool.api.options || []).forEach(o => {
+    const wrap = document.createElement("div");
+    wrap.className = "option";
+    const label = document.createElement("label");
+    label.htmlFor = "opt-" + o.name;
+    label.textContent = o.label;
+    let input;
+    if (o.type === "select") {
+      input = document.createElement("select");
+      o.choices.forEach(([value, text]) => input.add(new Option(text, value)));
+      if (o.value) input.value = o.value;
+    } else {
+      input = document.createElement("input");
+      input.type = "text";
+      input.value = o.value || "";
+      input.maxLength = 60;
+    }
+    input.id = "opt-" + o.name;
+    input.name = o.name;
+    wrap.append(label, input);
+    if (o.help) {
+      const help = document.createElement("p");
+      help.className = "help";
+      help.textContent = o.help;
+      wrap.appendChild(help);
+    }
+    box.appendChild(wrap);
+  });
+}
+
 function renderFiles() {
+  const api = state.tool.api;
   const list = $("#files");
-  const min = state.tool.api.min;
   list.innerHTML = "";
   state.files.forEach((f, i) => {
     const li = document.createElement("li");
@@ -108,17 +163,21 @@ function renderFiles() {
     size.textContent = fmtSize(f.size);
     const actions = document.createElement("span");
     actions.className = "file__actions";
-    actions.append(
-      iconButton("Move up", "↑", i === 0, () => moveFile(i, -1)),
-      iconButton("Move down", "↓", i === state.files.length - 1, () => moveFile(i, 1)),
-      iconButton("Remove " + f.name, "✕", false, () => { state.files.splice(i, 1); renderFiles(); }, "remove"),
-    );
+    if (api.multiple) {
+      actions.append(
+        iconButton("Move up", "↑", i === 0, () => moveFile(i, -1)),
+        iconButton("Move down", "↓", i === state.files.length - 1, () => moveFile(i, 1)),
+      );
+    }
+    actions.append(iconButton("Remove " + f.name, "✕", false, () => { state.files.splice(i, 1); renderFiles(); }, "remove"));
     li.append(name, size, actions);
     list.appendChild(li);
   });
   const n = state.files.length;
-  $("#hint").textContent = n < min ? `Add at least ${min} ${state.tool.api.noun}.` : `${n} files ready. Use the arrows to change the order.`;
-  $("#run").disabled = n < min;
+  let hint = api.need;
+  if (n >= api.min) hint = api.multiple && n > 1 ? `${n} files ready. Use the arrows to change the order.` : "Ready.";
+  $("#hint").textContent = hint;
+  $("#run").disabled = n < api.min;
 }
 
 function moveFile(i, step) {
@@ -129,11 +188,11 @@ function moveFile(i, step) {
 
 function addFiles(fileList) {
   const api = state.tool.api;
-  const ext = api.accept.replace(".", "").toLowerCase();
+  const exts = api.accept.split(",").map(e => e.trim().toLowerCase());
   const incoming = [...fileList];
-  const valid = incoming.filter(f => f.name.toLowerCase().endsWith("." + ext));
+  const valid = incoming.filter(f => exts.some(e => f.name.toLowerCase().endsWith(e)));
   const tooBig = valid.find(f => f.size > MAX_MB * 1048576);
-  if (valid.length < incoming.length) setStatus(`Only .${ext} files can be added here.`, true);
+  if (valid.length < incoming.length) setStatus(`Only ${exts.join(", ")} files can be added here.`, true);
   else if (tooBig) setStatus(`${tooBig.name} is larger than ${MAX_MB} MB.`, true);
   else setStatus("");
   const ok = valid.filter(f => f.size <= MAX_MB * 1048576);
@@ -142,10 +201,18 @@ function addFiles(fileList) {
   renderFiles();
 }
 
+function outputName(api) {
+  if (api.out) return api.out;
+  const base = state.files[0].name.replace(/\.[^.]+$/, "");
+  return base + api.suffix;
+}
+
 async function runTool() {
   const api = state.tool.api;
   const body = new FormData();
   state.files.forEach(f => body.append("files", f));
+  document.querySelectorAll("#options [name]").forEach(el => body.append(el.name, el.value));
+  const originalSize = state.files.reduce((sum, f) => sum + f.size, 0);
   $("#run").disabled = true;
   $("#result").hidden = true;
   setStatus("Working on it…");
@@ -156,8 +223,7 @@ async function runTool() {
       try { msg = (await res.json()).detail || msg; } catch (_) {}
       throw new Error(msg);
     }
-    const blob = await res.blob();
-    showResult(blob, api.out);
+    showResult(await res.blob(), outputName(api), api.compare ? originalSize : 0);
     setStatus("");
   } catch (err) {
     setStatus(err.message, true);
@@ -165,10 +231,17 @@ async function runTool() {
   $("#run").disabled = state.files.length < api.min;
 }
 
-function showResult(blob, filename) {
+function showResult(blob, filename, originalSize) {
   const box = $("#result");
   const p = document.createElement("p");
-  p.textContent = `Your file is ready (${fmtSize(blob.size)}).`;
+  if (originalSize && blob.size < originalSize) {
+    const saved = Math.round((1 - blob.size / originalSize) * 100);
+    p.textContent = `Reduced from ${fmtSize(originalSize)} to ${fmtSize(blob.size)} (${saved}% smaller).`;
+  } else if (originalSize) {
+    p.textContent = `This PDF is already well optimized (${fmtSize(originalSize)}), so its size did not change.`;
+  } else {
+    p.textContent = `Your file is ready (${fmtSize(blob.size)}).`;
+  }
   const link = document.createElement("a");
   link.className = "btn btn--primary";
   link.href = URL.createObjectURL(blob);
@@ -194,6 +267,9 @@ function openTool(tool) {
   picker.accept = tool.api.accept;
   picker.multiple = tool.api.multiple;
   picker.value = "";
+  $("#drop strong").textContent = tool.api.multiple ? "Choose files" : "Choose a file";
+  $("#drop span").textContent = tool.api.multiple ? "or drag and drop them here" : "or drag and drop it here";
+  renderOptions(tool);
   $("#result").hidden = true;
   setStatus("");
   renderFiles();
