@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.config import APP_NAME, APP_VERSION, STATIC_DIR
-from app.routers import pdf
+from app.routers import pdf, uzbek
 from app.services.pdf_tools import PdfToolError
 
 app = FastAPI(title=APP_NAME, version=APP_VERSION)
@@ -22,6 +22,7 @@ def health():
 
 
 app.include_router(pdf.router)
+app.include_router(uzbek.router)
 
 # The website itself (HTML/CSS/JS). Must stay LAST so /health and /api/* work first.
 app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")

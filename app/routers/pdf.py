@@ -68,3 +68,13 @@ async def images_to_pdf(files: list[UploadFile] = File(...)):
 @router.post("/watermark")
 async def watermark(files: list[UploadFile] = File(...), text: str = Form("Nexuz")):
     return file_response(pdf_tools.add_watermark(await read_one(files), text), "watermarked.pdf")
+
+
+@router.post("/protect")
+async def protect(files: list[UploadFile] = File(...), password: str = Form("")):
+    return file_response(pdf_tools.protect_pdf(await read_one(files), password), "protected.pdf")
+
+
+@router.post("/unlock")
+async def unlock(files: list[UploadFile] = File(...), password: str = Form("")):
+    return file_response(pdf_tools.unlock_pdf(await read_one(files), password), "unlocked.pdf")

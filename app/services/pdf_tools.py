@@ -144,3 +144,30 @@ def add_watermark(data: bytes, text: str) -> bytes:
             morph=(center, fitz.Matrix(45)),
         )
     return _save(doc)
+
+
+def protect_pdf(data: bytes, password: str) -> bytes:
+    """Lock a PDF with a password (AES-256). The password is never stored."""
+    if len(password) < 4:
+        raise PdfToolError("Use a password with at least 4 characters")
+    if len(password) > 64:
+        raise PdfToolError("The password can have at most 64 characters")
+    doc = open_pdf(data)
+    return doc.tobytes(
+        encryption=fitz.PDF_ENCRYPT_AES_256,
+        user_pw=password, owner_pw=password,
+        garbage=3, deflate=True,
+    )
+
+
+def unlock_pdf(data: bytes, password: str) -> bytes:
+    """Remove the password from a PDF. You must know the password."""
+    try:
+        doc = fitz.open(stream=data, filetype="pdf")
+    except Exception:
+        raise PdfToolError("This is not a valid PDF file")
+    if not doc.needs_pass:
+        raise PdfToolError("This PDF has no password to remove")
+    if not doc.authenticate(password):
+        raise PdfToolError("Wrong password")
+    return doc.tobytes(encryption=fitz.PDF_ENCRYPT_NONE, garbage=3, deflate=True)

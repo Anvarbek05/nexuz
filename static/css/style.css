@@ -134,3 +134,17 @@ a.card:hover { border-color: var(--brand); transform: translateY(-2px); }
 .option input, .option select { width: 100%; padding: 12px 14px; font: 500 17px var(--font-body); color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: 10px; }
 .option input:focus, .option select:focus { outline: 3px solid var(--accent); outline-offset: 1px; border-color: var(--brand); }
 .option .help { margin: 6px 0 0; font-size: 14px; color: var(--ink-soft); }
+
+/* Uzbek converter page */
+.tool--wide { max-width: 1000px; }
+.uz-target { max-width: 420px; }
+.uz-detected { color: var(--ink-soft); font-size: 15px; margin: 8px 0 18px; min-height: 1.5em; }
+.uz-panes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.uz-panes label { display: block; font-weight: 600; margin-bottom: 6px; }
+.uz-panes textarea { width: 100%; min-height: 220px; padding: 14px; font: 500 18px/1.5 var(--font-body); color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); resize: vertical; }
+.uz-panes textarea:focus { outline: 3px solid var(--accent); outline-offset: 1px; border-color: var(--brand); }
+.uz-panes textarea[readonly] { background: var(--brand-tint); border-color: #b9e0dc; }
+.uz-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+.uz-actions .btn { padding: 12px 22px; font-size: 16px; }
+.note { margin-top: 28px; padding: 16px 18px; background: var(--white); border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0; font-size: 15px; color: var(--ink-soft); }
+@media (max-width: 820px) { .uz-panes { grid-template-columns: 1fr; } }

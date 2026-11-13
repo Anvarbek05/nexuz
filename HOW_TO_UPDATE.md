@@ -14,10 +14,10 @@ Use the simplest, safest way: replace three folders and the files in the project
 7. In the VS Code terminal:
    venv\Scripts\activate
    pip install -r requirements-dev.txt
-   pytest                      (expect: 15 passed)
+   pytest                      (expect: 37 passed)
    uvicorn app.main:app --reload
 8. Open http://127.0.0.1:8000 and try the tools.
 9. Save to GitHub (Render redeploys by itself):
    git add .
-   git commit -m "Step 3: all PDF tools"
+   git commit -m "Step 4: Uzbek converter, protect and unlock"
    git push

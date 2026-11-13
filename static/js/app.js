@@ -47,13 +47,20 @@ const TOOLS = [
   { id: "img2pdf", name: "Images to PDF", group: "convert", icon: "image",
     desc: "Put JPG and PNG images into one PDF, one image per page.",
     api: { endpoint: "/api/img2pdf", accept: ".jpg,.jpeg,.png", multiple: true, min: 1, need: "Add at least 1 JPG or PNG image.", out: "images.pdf", button: "Create PDF" } },
-  { id: "uzbek", name: "Uzbek alphabet converter", group: "convert", icon: "text", desc: "Convert text between Uzbek Cyrillic and Latin." },
+  { id: "uzbek", name: "Uzbek alphabet converter", group: "convert", icon: "text", kind: "text",
+    desc: "Convert text between Cyrillic, current Latin and the new Ö Ğ Ş Ç alphabet." },
   { id: "watermark", name: "Add watermark", group: "edit", icon: "drop",
     desc: "Stamp text across every page of a PDF.",
     api: { endpoint: "/api/watermark", accept: ".pdf", multiple: false, min: 1, need: "Add a PDF file.", suffix: "-watermarked.pdf", button: "Add watermark",
       options: [{ name: "text", label: "Watermark text", type: "text", value: "Nexuz", help: "Latin letters and numbers. Marks like ğ or ş are not supported yet." }] } },
-  { id: "protect", name: "Protect PDF", group: "security", icon: "lock", desc: "Lock a PDF with a password." },
-  { id: "unlock", name: "Unlock PDF", group: "security", icon: "unlock", desc: "Remove the password from your own PDF." },
+  { id: "protect", name: "Protect PDF", group: "security", icon: "lock",
+    desc: "Lock a PDF with a password.",
+    api: { endpoint: "/api/protect", accept: ".pdf", multiple: false, min: 1, need: "Add a PDF file.", suffix: "-protected.pdf", button: "Protect PDF",
+      options: [{ name: "password", label: "Password", type: "password", help: "At least 4 characters. If you forget it, the file cannot be opened, and Nexuz cannot recover it." }] } },
+  { id: "unlock", name: "Unlock PDF", group: "security", icon: "unlock",
+    desc: "Remove the password from your own PDF.",
+    api: { endpoint: "/api/unlock", accept: ".pdf", multiple: false, min: 1, need: "Add a PDF file.", suffix: "-unlocked.pdf", button: "Unlock PDF",
+      options: [{ name: "password", label: "Current password", type: "password", help: "You need to know the password. Nexuz cannot guess or break passwords." }] } },
 ];
 
 const $ = s => document.querySelector(s);
@@ -77,7 +84,7 @@ function renderGrid() {
   const grid = $("#grid");
   grid.innerHTML = "";
   TOOLS.filter(t => state.group === "all" || t.group === state.group).forEach(t => {
-    const ready = !!t.api;
+    const ready = !!(t.api || t.kind);
     const card = document.createElement(ready ? "a" : "div");
     card.className = "card" + (ready ? "" : " card--soon");
     if (ready) card.href = "#" + t.id;
@@ -129,6 +136,12 @@ function renderOptions(tool) {
       input = document.createElement("select");
       o.choices.forEach(([value, text]) => input.add(new Option(text, value)));
       if (o.value) input.value = o.value;
+    } else if (o.type === "password") {
+      input = document.createElement("input");
+      input.type = "password";
+      input.autocomplete = "off";
+      input.value = "";
+      input.maxLength = 64;
     } else {
       input = document.createElement("input");
       input.type = "text";
@@ -278,10 +291,14 @@ function openTool(tool) {
 // ---- routing: #merge opens a tool, anything else shows home ----
 function route() {
   const id = location.hash.slice(1);
-  const tool = TOOLS.find(t => t.id === id && t.api);
+  const tool = TOOLS.find(t => t.id === id && (t.api || t.kind));
+  const isText = !!tool && tool.kind === "text";
+  const isFile = !!tool && !!tool.api;
   $("#home").hidden = !!tool;
-  $("#tool-view").hidden = !tool;
-  if (tool) { openTool(tool); window.scrollTo(0, 0); }
+  $("#tool-view").hidden = !isFile;
+  $("#uzbek-view").hidden = !isText;
+  if (isFile) { openTool(tool); window.scrollTo(0, 0); }
+  else if (isText) { openUzbek(tool); window.scrollTo(0, 0); }
   else document.title = "Nexuz — Free online PDF tools";
   if (!tool && id === "tools") $("#tools").scrollIntoView();
 }
@@ -294,6 +311,75 @@ drop.addEventListener("drop", e => { e.preventDefault(); drop.classList.remove("
 $("#run").addEventListener("click", runTool);
 window.addEventListener("hashchange", route);
 
+
+// ---- Uzbek alphabet converter (text tool) ----
+const UZ_NAMES = { cyrillic: "Cyrillic", latin: "current Latin", latin_new: "new Latin" };
+const UZ_EXAMPLE = "O‘zbekiston — Markaziy Osiyodagi go‘zal mamlakat. Toshkent shahri chiroyli, g‘alaba va choy haqida gaplashamiz.";
+const uz = { timer: null, seq: 0 };
+
+function uzStatus(msg, isError = false) {
+  const el = $("#uz-status");
+  el.textContent = msg;
+  el.classList.toggle("is-error", isError);
+}
+
+function uzConvert() {
+  clearTimeout(uz.timer);
+  uz.timer = setTimeout(async () => {
+    const text = $("#uz-in").value;
+    if (!text.trim()) {
+      $("#uz-out").value = "";
+      $("#uz-detected").textContent = "";
+      uzStatus("");
+      return;
+    }
+    const mine = ++uz.seq;
+    try {
+      const res = await fetch("/api/uzbek/convert", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, target: $("#uz-target").value }),
+      });
+      if (!res.ok) throw new Error("The text is too long. The limit is 20,000 characters.");
+      const data = await res.json();
+      if (mine !== uz.seq) return;   // a newer request is already running
+      $("#uz-out").value = data.text;
+      $("#uz-detected").textContent = "Detected: " + UZ_NAMES[data.source];
+      uzStatus("");
+    } catch (err) {
+      if (mine === uz.seq) uzStatus(err.message || "Could not convert. Please try again.", true);
+    }
+  }, 300);
+}
+
+async function uzCopy() {
+  const text = $("#uz-out").value;
+  if (!text) { uzStatus("Nothing to copy yet.", true); return; }
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (_) {
+    $("#uz-out").select();
+    document.execCommand("copy");
+  }
+  uzStatus("Copied.");
+}
+
+function openUzbek(tool) {
+  document.title = `${tool.name} — Nexuz`;
+}
+
+function initUzbek() {
+  $("#uz-in").addEventListener("input", uzConvert);
+  $("#uz-target").addEventListener("change", uzConvert);
+  $("#uz-copy").addEventListener("click", uzCopy);
+  $("#uz-clear").addEventListener("click", () => {
+    $("#uz-in").value = ""; $("#uz-out").value = ""; $("#uz-detected").textContent = ""; uzStatus("");
+    $("#uz-in").focus();
+  });
+  $("#uz-example").addEventListener("click", () => { $("#uz-in").value = UZ_EXAMPLE; uzConvert(); });
+}
+
+initUzbek();
 renderFilters();
 renderGrid();
 route();

@@ -16,7 +16,7 @@
       <a class="logo" href="#" aria-label="Nexuz home">Nex<span>uz</span></a>
       <nav class="nav" aria-label="Main">
         <a href="#tools" data-home-link>All tools</a>
-        <a href="#merge">Merge PDF</a>
+        <a href="#uzbek">Uzbek converter</a>
       </nav>
     </div>
   </header>
@@ -72,7 +72,7 @@
           </div>
           <div>
             <h3>Made for Uzbek users</h3>
-            <p>An Uzbek Cyrillic and Latin converter is on the way, including the new alphabet.</p>
+            <p>Convert Uzbek text between Cyrillic, the current Latin and the new alphabet with Ö, Ğ, Ş and Ç.</p>
           </div>
         </div>
       </section>
@@ -96,6 +96,45 @@
       <button class="btn btn--primary btn--block" id="run" type="button" disabled></button>
       <p class="status" id="status" role="status" aria-live="polite"></p>
       <div class="result" id="result" hidden></div>
+    </section>
+
+    <!-- UZBEK CONVERTER PAGE -->
+    <section id="uzbek-view" class="container tool tool--wide" hidden>
+      <a class="back" href="#tools" data-home-link>← All tools</a>
+      <h1>Uzbek alphabet converter</h1>
+      <p class="tool__desc">Convert Uzbek text between Cyrillic, the current Latin alphabet and the new alphabet with Ö, Ğ, Ş and Ç.</p>
+
+      <div class="option uz-target">
+        <label for="uz-target">Convert to</label>
+        <select id="uz-target">
+          <option value="latin_new">New Latin: Ö Ğ Ş Ç</option>
+          <option value="latin">Current Latin: Oʻ Gʻ Sh Ch</option>
+          <option value="cyrillic">Cyrillic: Ўзбек</option>
+        </select>
+      </div>
+      <p class="uz-detected" id="uz-detected" aria-live="polite"></p>
+
+      <div class="uz-panes">
+        <div>
+          <label for="uz-in">Your text</label>
+          <textarea id="uz-in" rows="10" maxlength="20000" placeholder="Paste or type Uzbek text here"></textarea>
+        </div>
+        <div>
+          <label for="uz-out">Result</label>
+          <textarea id="uz-out" rows="10" readonly></textarea>
+        </div>
+      </div>
+
+      <div class="uz-actions">
+        <button class="btn btn--primary" id="uz-copy" type="button">Copy result</button>
+        <button class="btn btn--ghost" id="uz-example" type="button">Try an example</button>
+        <button class="btn btn--ghost" id="uz-clear" type="button">Clear</button>
+      </div>
+      <p class="status" id="uz-status" role="status" aria-live="polite"></p>
+
+      <aside class="note">
+        <strong>About the new alphabet.</strong> A law signed on 21 October 2026 replaces Oʻ, Gʻ, Sh and Ch with Ö, Ğ, Ş and Ç, and it takes effect on 22 April 2027. The letters ng are no longer a separate letter, and the apostrophe (tutuq belgisi) stays. Always check names and foreign words after converting.
+      </aside>
     </section>
   </main>
 

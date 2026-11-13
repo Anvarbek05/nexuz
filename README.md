@@ -2,7 +2,7 @@
 
 Free online PDF tools. Python (FastAPI + PyMuPDF) backend, plain HTML/CSS/JS frontend. Files are processed in memory and never stored.
 
-**Version 0.3.0** | Live: https://nexuz-vtcb.onrender.com
+**Version 0.4.0** | Live: https://nexuz-vtcb.onrender.com
 
 ## Tools
 | Tool | Page | API route | Options |
@@ -14,6 +14,9 @@ Free online PDF tools. Python (FastAPI + PyMuPDF) backend, plain HTML/CSS/JS fro
 | PDF to images | `/#pdf2img` | `POST /api/pdf2img` | `fmt` png / jpg (max 50 pages, ZIP) |
 | Images to PDF | `/#img2pdf` | `POST /api/img2pdf` | JPG/PNG files in order |
 | Add watermark | `/#watermark` | `POST /api/watermark` | `text` (Latin letters only for now) |
+| Protect PDF | `/#protect` | `POST /api/protect` | `password` (4 to 64 characters, AES-256) |
+| Unlock PDF | `/#unlock` | `POST /api/unlock` | `password` (you must know it) |
+| Uzbek alphabet converter | `/#uzbek` | `POST /api/uzbek/convert` | JSON `{text, target}`; target `cyrillic`, `latin` or `latin_new`; source is auto-detected |
 
 Limits: 25 MB per file (free Render server has 512 MB RAM). First visit after idle can take up to a minute.
 
@@ -26,7 +29,7 @@ uvicorn app.main:app --reload
 ```
 Open http://127.0.0.1:8000
 
-## Run tests (15 tests)
+## Run tests (37 tests)
 ```powershell
 pytest
 ```
@@ -43,8 +46,10 @@ app/
   main.py          entry point, error handler, serves the website
   config.py        settings (name, version, upload limit)
   routers/pdf.py   web routes: receive files, call a service, return the result
+  routers/uzbek.py web route for the alphabet converter
   services/
     pdf_tools.py   all PDF logic (no web code)
+    uzbek.py       alphabet converter logic (no web code)
 static/
   index.html       home page + tool page
   css/style.css    design
@@ -64,7 +69,13 @@ Then add a test in `tests/` and push.
 - [x] Step 1: project skeleton
 - [x] Step 2: new design, home page, Merge PDF
 - [x] Step 3: Extract pages, Rotate, Compress, PDF to images, Images to PDF, Watermark
-- [ ] Step 4: Uzbek alphabet converter, Protect PDF, Unlock PDF
+- [x] Step 4: Uzbek alphabet converter (Cyrillic / current Latin / new Latin), Protect PDF, Unlock PDF
 - [ ] Step 5: Uzbek / Russian / English interface, logo, SEO pages for each tool
 - [ ] Step 6: accounts, usage limits, payments
 - [ ] Step 7: Word / Excel conversion (Docker + LibreOffice), OCR
+
+## Uzbek alphabet rules used by the converter
+Law signed 21 October 2026, in force from 22 April 2027: Oʻ → Ö, Gʻ → Ğ, Sh → Ş, Ch → Ç.
+"ng" is no longer a separate letter; the apostrophe (tutuq belgisi) stays.
+Known limits: a few Cyrillic rules (e.g. ц, е after vowels) follow the common spelling rules but
+foreign words and names should always be checked by a person.
