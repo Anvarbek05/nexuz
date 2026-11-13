@@ -30,3 +30,4 @@ render.yaml      Render deployment config
 
 ## Progress
 - [x] Step 1: project skeleton
+- [x] Step 2: new design, home page with tool cards, working Merge PDF tool
