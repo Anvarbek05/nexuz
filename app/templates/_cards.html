@@ -1,0 +1,11 @@
+{% macro card_grid(items, with_group=False) %}
+<div class="grid"{% if with_group %} id="grid"{% endif %}>
+  {% for c in items %}
+  <a class="card" href="{{ c.url }}" data-group="{{ c.group }}">
+    <span class="card__icon">{{ icon(c.icon) }}</span>
+    <h3>{{ c.name }}</h3>
+    <p>{{ c.desc }}</p>
+  </a>
+  {% endfor %}
+</div>
+{% endmacro %}

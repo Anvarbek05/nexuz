@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ description }}">
+  <link rel="canonical" href="{{ canonical }}">
+  {% for a in alternates %}<link rel="alternate" hreflang="{{ a.hreflang }}" href="{{ a.href }}">
+  {% endfor %}<link rel="alternate" hreflang="x-default" href="{{ x_default }}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ site_name }}">
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:description" content="{{ description }}">
+  <meta property="og:url" content="{{ canonical }}">
+  <meta property="og:image" content="{{ og_image }}">
+  <meta property="og:locale" content="{{ og_locale }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#0b7a75">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="apple-touch-icon" href="/static/img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Rubik:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css?v={{ version }}">
+  <script type="application/ld+json">{{ jsonld|safe }}</script>
+</head>
+<body>
+  <a class="skip" href="#main">{{ ui.skip }}</a>
+  <header class="header">
+    <div class="container header__row">
+      <a class="logo" href="{{ home_url }}" aria-label="Nexuz">
+        <img src="/static/img/logo.svg" width="34" height="34" alt="">
+        <span>Nex<b>uz</b></span>
+      </a>
+      <div class="header__right">
+        <nav class="nav" aria-label="{{ ui.nav_label }}">
+          <a href="{{ home_url }}#tools">{{ ui.nav_tools }}</a>
+          <a href="{{ converter_url }}">{{ ui.nav_uzbek }}</a>
+        </nav>
+        <div class="langs" role="group" aria-label="{{ ui.lang_label }}">
+          {% for l in langs %}<a href="{{ l.url }}" hreflang="{{ l.code }}" lang="{{ l.code }}"{% if l.current %} aria-current="true"{% endif %}>{{ l.code|upper }}</a>{% endfor %}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__row">
+      <a class="logo logo--small" href="{{ home_url }}"><img src="/static/img/logo.svg" width="26" height="26" alt=""><span>Nex<b>uz</b></span></a>
+      <span>{{ ui.footer }}</span>
+    </div>
+  </footer>
+
+  <script>window.NEXUZ = {{ client|safe }};</script>
+  <script src="/static/js/app.js?v={{ version }}" defer></script>
+</body>
+</html>

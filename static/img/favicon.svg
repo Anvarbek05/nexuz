@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Nexuz">
+  <rect width="64" height="64" rx="15" fill="#0B7A75"/>
+  <path d="M21 11h16l12 12v28a4 4 0 0 1-4 4H21a4 4 0 0 1-4-4V15a4 4 0 0 1 4-4z" fill="#fff"/>
+  <path d="M37 11v9a3 3 0 0 0 3 3h9z" fill="#E4A11B"/>
+  <path d="M25 47V30l16 17V30" fill="none" stroke="#10243E" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

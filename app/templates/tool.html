@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container tool">
+  <a class="back" href="{{ home_url }}#tools">{{ ui.back }}</a>
+  <h1>{{ text.name }}</h1>
+  <p class="tool__desc">{{ text.desc }}</p>
+
+  <label class="drop" id="drop">
+    <input type="file" id="picker" class="sr-only" accept="{{ tool.api.accept }}"{% if tool.api.multiple %} multiple{% endif %}>
+    <strong>{{ ui.choose_files if tool.api.multiple else ui.choose_file }}</strong>
+    <span>{{ ui.drop_many if tool.api.multiple else ui.drop_one }}</span>
+  </label>
+
+  <ul class="files" id="files"></ul>
+  <p class="hint" id="hint" aria-live="polite">{{ text.need }}</p>
+  <div class="options" id="options"></div>
+  <button class="btn btn--primary btn--block" id="run" type="button" disabled>{{ text.button }}</button>
+  <p class="status" id="status" role="status" aria-live="polite"></p>
+  <div class="result" id="result" hidden></div>
+</section>
+{% include "_more.html" %}
+{% endblock %}

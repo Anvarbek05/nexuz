@@ -1,0 +1,13 @@
+{% from "_cards.html" import card_grid %}
+<section class="section section--tint howto">
+  <div class="container">
+    <h2>{{ ui.how_title }}</h2>
+    <ol class="steps">{% for s in steps %}<li>{{ s }}</li>{% endfor %}</ol>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <h2 class="more__title">{{ ui.more_title }}</h2>
+    {{ card_grid(related) }}
+  </div>
+</section>

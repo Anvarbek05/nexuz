@@ -10,8 +10,8 @@
   --accent: #e4a11b;
   --danger: #b42318;
   --radius: 12px;
-  --font-head: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-  --font-body: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+  --font-head: "Rubik", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Onest", "Segoe UI", system-ui, sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -148,3 +148,20 @@ a.card:hover { border-color: var(--brand); transform: translateY(-2px); }
 .uz-actions .btn { padding: 12px 22px; font-size: 16px; }
 .note { margin-top: 28px; padding: 16px 18px; background: var(--white); border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0; font-size: 15px; color: var(--ink-soft); }
 @media (max-width: 820px) { .uz-panes { grid-template-columns: 1fr; } }
+
+/* ---- Step 5: logo, language switch, pages ---- */
+.skip { position: absolute; left: -999px; top: 8px; background: var(--ink); color: var(--white); padding: 10px 16px; border-radius: 8px; z-index: 20; }
+.skip:focus { left: 12px; }
+.logo { display: inline-flex; align-items: center; gap: 10px; }
+.logo b { font-weight: 800; color: var(--ink); }
+.logo img { display: block; }
+.header__right { display: flex; align-items: center; gap: 28px; }
+.langs { display: flex; gap: 4px; }
+.langs a { padding: 6px 10px; border-radius: 8px; border: 1px solid transparent; font-size: 14px; font-weight: 600; text-decoration: none; color: var(--ink-soft); }
+.langs a:hover { border-color: var(--line); }
+.langs a[aria-current="true"] { background: var(--ink); color: var(--white); }
+.howto h2, .more__title { font-size: 30px; font-weight: 800; margin-bottom: 20px; }
+.steps { margin: 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: 14px; max-width: 720px; }
+.steps li { counter-increment: step; position: relative; padding-left: 52px; min-height: 36px; display: flex; align-items: center; }
+.steps li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--brand); color: var(--white); display: grid; place-items: center; font: 800 17px var(--font-head); }
+@media (max-width: 700px) { .nav { display: none; } .header__right { gap: 0; } }

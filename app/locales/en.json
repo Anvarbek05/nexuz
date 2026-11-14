@@ -1,0 +1,277 @@
+{
+ "lang": "en",
+ "ui": {
+  "nav_tools": "All tools",
+  "nav_uzbek": "Uzbek converter",
+  "nav_label": "Main menu",
+  "lang_label": "Language",
+  "skip": "Skip to content",
+  "home_title": "Nexuz — Free online PDF tools",
+  "home_desc": "Merge, split, rotate, compress and convert PDF files online for free. Includes an Uzbek Cyrillic and Latin converter with the new Ö Ğ Ş Ç alphabet.",
+  "hero_title": "Free PDF tools for everyday documents",
+  "hero_lead": "Merge, split, rotate and convert PDF files right in your browser. Nothing to install, and your files are deleted as soon as they are processed.",
+  "cta_primary": "Merge PDF files",
+  "cta_secondary": "See all tools",
+  "tools_title": "All PDF tools",
+  "filter_label": "Filter tools",
+  "filters": {
+   "all": "All",
+   "organize": "Organize",
+   "convert": "Convert",
+   "edit": "Edit",
+   "security": "Security"
+  },
+  "facts": [
+   {
+    "t": "Your files stay private",
+    "p": "Files are processed in memory and deleted right away. Nexuz never saves your documents."
+   },
+   {
+    "t": "Free, no sign-up",
+    "p": "Open a tool, add your files and download the result. No account needed."
+   },
+   {
+    "t": "Made for Uzbek users",
+    "p": "Convert Uzbek text between Cyrillic, the current Latin and the new alphabet with Ö, Ğ, Ş and Ç."
+   }
+  ],
+  "back": "← All tools",
+  "how_title": "How to use",
+  "more_title": "More tools",
+  "footer": "© 2026 Nexuz. Files up to 25 MB, never stored. The first load can take up to a minute while the server wakes up.",
+  "choose_files": "Choose files",
+  "choose_file": "Choose a file",
+  "drop_many": "or drag and drop them here",
+  "drop_one": "or drag and drop it here",
+  "hint_ready": "Ready.",
+  "hint_many": "{n} files ready. Use the arrows to change the order.",
+  "move_up": "Move up",
+  "move_down": "Move down",
+  "remove": "Remove {name}",
+  "working": "Working on it…",
+  "ready_msg": "Your file is ready ({size}).",
+  "reduced": "Reduced from {from} to {to} ({pct}% smaller).",
+  "optimized": "This PDF is already well optimized ({size}), so its size did not change.",
+  "download": "Download {name}",
+  "start_over": "Start over",
+  "err_ext": "Only {exts} files can be added here.",
+  "err_big": "{name} is larger than {max} MB.",
+  "err_generic": "Something went wrong. Please try again.",
+  "kb": "KB",
+  "mb": "MB",
+  "uz_convert_to": "Convert to",
+  "uz_opt_latin_new": "New Latin: Ö Ğ Ş Ç",
+  "uz_opt_latin": "Current Latin: Oʻ Gʻ Sh Ch",
+  "uz_opt_cyrillic": "Cyrillic: Ўзбек",
+  "uz_in": "Your text",
+  "uz_out": "Result",
+  "uz_placeholder": "Paste or type Uzbek text here",
+  "uz_copy": "Copy result",
+  "uz_example": "Try an example",
+  "uz_clear": "Clear",
+  "uz_detected": "Detected: {script}",
+  "uz_scripts": {
+   "cyrillic": "Cyrillic",
+   "latin": "current Latin",
+   "latin_new": "new Latin"
+  },
+  "uz_copied": "Copied.",
+  "uz_nothing": "Nothing to copy yet.",
+  "uz_err_long": "The text is too long. The limit is 20,000 characters.",
+  "uz_note_title": "About the new alphabet.",
+  "uz_note_body": "A law signed on 21 October 2026 replaces Oʻ, Gʻ, Sh and Ch with Ö, Ğ, Ş and Ç, and it takes effect on 22 April 2027. The letters ng are no longer a separate letter, and the apostrophe (tutuq belgisi) stays. Always check names and foreign words after converting.",
+  "uz_example_text": "O'zbekiston — Markaziy Osiyodagi go'zal mamlakat. Toshkent shahri chiroyli, g'alaba va choy haqida gaplashamiz.",
+  "not_found_title": "Page not found",
+  "not_found_text": "This page does not exist. Try the list of tools.",
+  "go_home": "Go to the tools"
+ },
+ "tools": {
+  "merge": {
+   "name": "Merge PDF",
+   "desc": "Combine several PDF files into one, in the order you choose.",
+   "seo_title": "Merge PDF files online, free",
+   "seo_desc": "Merge PDF files into one document online for free. Add files, set the order and download. No sign-up, and files are never stored.",
+   "button": "Merge PDF",
+   "need": "Add at least 2 PDF files.",
+   "options": {},
+   "steps": [
+    "Add two or more PDF files.",
+    "Use the arrows to put them in the right order.",
+    "Click “Merge PDF” and download the result."
+   ]
+  },
+  "split": {
+   "name": "Extract pages",
+   "desc": "Keep only the pages you need from a PDF.",
+   "seo_title": "Extract pages from a PDF online",
+   "seo_desc": "Keep only the pages you need from a PDF file, for example 1-3,5. Free, fast and private.",
+   "button": "Extract pages",
+   "need": "Add a PDF file.",
+   "options": {
+    "pages": {
+     "label": "Pages to keep",
+     "help": "Example: 1-3,5 keeps pages 1, 2, 3 and 5."
+    }
+   },
+   "steps": [
+    "Add your PDF file.",
+    "Type the pages to keep, for example 1-3,5.",
+    "Click “Extract pages” and download the new PDF."
+   ]
+  },
+  "rotate": {
+   "name": "Rotate PDF",
+   "desc": "Turn all pages of a PDF the right way up.",
+   "seo_title": "Rotate PDF pages online",
+   "seo_desc": "Rotate all pages of a PDF by 90, 180 or 270 degrees online. Free and private.",
+   "button": "Rotate PDF",
+   "need": "Add a PDF file.",
+   "options": {
+    "angle": {
+     "label": "Rotation",
+     "choices": {
+      "90": "90° clockwise",
+      "180": "180°",
+      "270": "90° counter-clockwise"
+     }
+    }
+   },
+   "steps": [
+    "Add your PDF file.",
+    "Choose how to rotate the pages.",
+    "Click “Rotate PDF” and download the result."
+   ]
+  },
+  "compress": {
+   "name": "Compress PDF",
+   "desc": "Make a PDF smaller for email and uploads.",
+   "seo_title": "Compress PDF online, reduce file size",
+   "seo_desc": "Make a PDF smaller for email and uploads. Choose low, medium or high compression. Free, no sign-up.",
+   "button": "Compress PDF",
+   "need": "Add a PDF file.",
+   "options": {
+    "level": {
+     "label": "Compression level",
+     "help": "Works best on PDFs with photos or scans. Text-only PDFs are already small.",
+     "choices": {
+      "low": "Low: best quality",
+      "medium": "Medium: recommended",
+      "high": "High: smallest file"
+     }
+    }
+   },
+   "steps": [
+    "Add your PDF file.",
+    "Choose a compression level. Medium is best for most files.",
+    "Click “Compress PDF” and download the smaller file."
+   ]
+  },
+  "pdf2img": {
+   "name": "PDF to images",
+   "desc": "Save every page as an image. Up to 50 pages.",
+   "seo_title": "Convert PDF to JPG or PNG images online",
+   "seo_desc": "Save every page of a PDF as a PNG or JPG image and download them as a ZIP. Free and private.",
+   "button": "Convert to images",
+   "need": "Add a PDF file.",
+   "options": {
+    "fmt": {
+     "label": "Image format",
+     "choices": {
+      "png": "PNG: sharp",
+      "jpg": "JPG: smaller files"
+     }
+    }
+   },
+   "steps": [
+    "Add your PDF file (up to 50 pages).",
+    "Choose PNG for sharp images or JPG for smaller files.",
+    "Click “Convert to images” and download the ZIP."
+   ]
+  },
+  "img2pdf": {
+   "name": "Images to PDF",
+   "desc": "Put JPG and PNG images into one PDF, one image per page.",
+   "seo_title": "Convert JPG and PNG images to PDF online",
+   "seo_desc": "Put JPG and PNG images into one PDF file, one image per page. Free, fast and private.",
+   "button": "Create PDF",
+   "need": "Add at least 1 JPG or PNG image.",
+   "options": {},
+   "steps": [
+    "Add your JPG or PNG images.",
+    "Use the arrows to set the page order.",
+    "Click “Create PDF” and download the result."
+   ]
+  },
+  "watermark": {
+   "name": "Add watermark",
+   "desc": "Stamp text across every page of a PDF.",
+   "seo_title": "Add a watermark to a PDF online",
+   "seo_desc": "Stamp a text watermark across every page of your PDF. Free, fast and private.",
+   "button": "Add watermark",
+   "need": "Add a PDF file.",
+   "options": {
+    "text": {
+     "label": "Watermark text",
+     "help": "Latin letters and numbers. Marks like ğ or ş are not supported yet."
+    }
+   },
+   "steps": [
+    "Add your PDF file.",
+    "Type the watermark text.",
+    "Click “Add watermark” and download the result."
+   ]
+  },
+  "protect": {
+   "name": "Protect PDF",
+   "desc": "Lock a PDF with a password.",
+   "seo_title": "Protect a PDF with a password online",
+   "seo_desc": "Lock your PDF with a password (AES-256 encryption). Free, and your file and password are never stored.",
+   "button": "Protect PDF",
+   "need": "Add a PDF file.",
+   "options": {
+    "password": {
+     "label": "Password",
+     "help": "At least 4 characters. If you forget it, the file cannot be opened, and Nexuz cannot recover it."
+    }
+   },
+   "steps": [
+    "Add your PDF file.",
+    "Choose a password.",
+    "Click “Protect PDF” and download the locked file."
+   ]
+  },
+  "unlock": {
+   "name": "Unlock PDF",
+   "desc": "Remove the password from your own PDF.",
+   "seo_title": "Remove a PDF password online",
+   "seo_desc": "Remove the password from your own PDF file. You must know the password. Free and private.",
+   "button": "Unlock PDF",
+   "need": "Add a PDF file.",
+   "options": {
+    "password": {
+     "label": "Current password",
+     "help": "You need to know the password. Nexuz cannot guess or break passwords."
+    }
+   },
+   "steps": [
+    "Add the protected PDF file.",
+    "Enter its current password.",
+    "Click “Unlock PDF” and download the file without a password."
+   ]
+  },
+  "uzbek": {
+   "name": "Uzbek alphabet converter",
+   "desc": "Convert text between Cyrillic, the current Latin and the new Ö Ğ Ş Ç alphabet.",
+   "seo_title": "Uzbek Cyrillic to Latin converter, new alphabet Ö Ğ Ş Ç",
+   "seo_desc": "Convert Uzbek text between Cyrillic, the current Latin and the new Ö, Ğ, Ş, Ç alphabet for free. The alphabet law takes effect on 22 April 2027.",
+   "button": "",
+   "need": "",
+   "options": {},
+   "steps": [
+    "Paste or type your text on the left.",
+    "Choose the alphabet you want in “Convert to”.",
+    "Copy the result and check names and foreign words."
+   ]
+  }
+ }
+}

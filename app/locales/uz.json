@@ -1,0 +1,277 @@
+{
+ "lang": "uz",
+ "ui": {
+  "nav_tools": "Barcha vositalar",
+  "nav_uzbek": "Alifbo konvertori",
+  "nav_label": "Asosiy menyu",
+  "lang_label": "Til",
+  "skip": "Mazmunga oʻtish",
+  "home_title": "Nexuz — Bepul onlayn PDF vositalari",
+  "home_desc": "PDF fayllarni onlayn bepul birlashtiring, ajrating, buring, siqing va konvertatsiya qiling. Yangi Ö Ğ Ş Ç alifbosi bilan ishlaydigan oʻzbek kirill–lotin konvertori ham bor.",
+  "hero_title": "Kundalik hujjatlar uchun bepul PDF vositalari",
+  "hero_lead": "PDF fayllarni brauzerning oʻzida birlashtiring, ajrating, buring va konvertatsiya qiling. Hech narsa oʻrnatish shart emas, fayllaringiz qayta ishlangandan soʻng darhol oʻchiriladi.",
+  "cta_primary": "PDF fayllarni birlashtirish",
+  "cta_secondary": "Barcha vositalar",
+  "tools_title": "Barcha PDF vositalari",
+  "filter_label": "Vositalarni saralash",
+  "filters": {
+   "all": "Hammasi",
+   "organize": "Tartiblash",
+   "convert": "Konvertatsiya",
+   "edit": "Tahrirlash",
+   "security": "Xavfsizlik"
+  },
+  "facts": [
+   {
+    "t": "Fayllaringiz maxfiy qoladi",
+    "p": "Fayllar xotirada qayta ishlanadi va darhol oʻchiriladi. Nexuz hujjatlaringizni saqlamaydi."
+   },
+   {
+    "t": "Bepul, roʻyxatdan oʻtmasdan",
+    "p": "Vositani oching, fayllarni qoʻshing va natijani yuklab oling. Akkaunt shart emas."
+   },
+   {
+    "t": "Oʻzbek foydalanuvchilar uchun",
+    "p": "Oʻzbek matnini kirill, joriy lotin va Ö, Ğ, Ş, Ç harfli yangi alifbo oʻrtasida konvertatsiya qiling."
+   }
+  ],
+  "back": "← Barcha vositalar",
+  "how_title": "Qanday foydalaniladi",
+  "more_title": "Boshqa vositalar",
+  "footer": "© 2026 Nexuz. Fayllar 25 MB gacha, hech qachon saqlanmaydi. Server uxlab qolgan boʻlsa, birinchi ochilish bir daqiqagacha choʻzilishi mumkin.",
+  "choose_files": "Fayllarni tanlang",
+  "choose_file": "Faylni tanlang",
+  "drop_many": "yoki ularni shu yerga tashlang",
+  "drop_one": "yoki uni shu yerga tashlang",
+  "hint_ready": "Tayyor.",
+  "hint_many": "{n} ta fayl tayyor. Tartibni oʻzgartirish uchun strelkalardan foydalaning.",
+  "move_up": "Yuqoriga",
+  "move_down": "Pastga",
+  "remove": "{name} faylini olib tashlash",
+  "working": "Bajarilmoqda…",
+  "ready_msg": "Faylingiz tayyor ({size}).",
+  "reduced": "{from} dan {to} gacha kichraydi ({pct}% kichik).",
+  "optimized": "Bu PDF allaqachon yaxshi optimallashtirilgan ({size}), shuning uchun hajmi oʻzgarmadi.",
+  "download": "{name} yuklab olish",
+  "start_over": "Boshidan boshlash",
+  "err_ext": "Bu yerga faqat {exts} fayllarini qoʻshish mumkin.",
+  "err_big": "{name} hajmi {max} MB dan katta.",
+  "err_generic": "Xatolik yuz berdi. Qayta urinib koʻring.",
+  "kb": "KB",
+  "mb": "MB",
+  "uz_convert_to": "Quyidagiga konvertatsiya qilish",
+  "uz_opt_latin_new": "Yangi lotin: Ö Ğ Ş Ç",
+  "uz_opt_latin": "Joriy lotin: Oʻ Gʻ Sh Ch",
+  "uz_opt_cyrillic": "Kirill: Ўзбек",
+  "uz_in": "Matningiz",
+  "uz_out": "Natija",
+  "uz_placeholder": "Oʻzbek matnini shu yerga joylang yoki yozing",
+  "uz_copy": "Natijani nusxalash",
+  "uz_example": "Misol keltirish",
+  "uz_clear": "Tozalash",
+  "uz_detected": "Aniqlandi: {script}",
+  "uz_scripts": {
+   "cyrillic": "kirill",
+   "latin": "joriy lotin",
+   "latin_new": "yangi lotin"
+  },
+  "uz_copied": "Nusxalandi.",
+  "uz_nothing": "Hozircha nusxalash uchun hech narsa yoʻq.",
+  "uz_err_long": "Matn juda uzun. Chegara — 20 000 belgi.",
+  "uz_note_title": "Yangi alifbo haqida.",
+  "uz_note_body": "2026-yil 21-oktabrda imzolangan qonun Oʻ, Gʻ, Sh va Ch ni Ö, Ğ, Ş va Ç bilan almashtiradi va 2027-yil 22-aprelda kuchga kiradi. ng harf birikmasi endi alohida harf hisoblanmaydi, apostrof (tutuq belgisi) saqlanadi. Konvertatsiyadan soʻng ismlar va chet soʻzlarini albatta tekshiring.",
+  "uz_example_text": "O'zbekiston — Markaziy Osiyodagi go'zal mamlakat. Toshkent shahri chiroyli, g'alaba va choy haqida gaplashamiz.",
+  "not_found_title": "Sahifa topilmadi",
+  "not_found_text": "Bunday sahifa yoʻq. Vositalar roʻyxatini oching.",
+  "go_home": "Vositalarga oʻtish"
+ },
+ "tools": {
+  "merge": {
+   "name": "PDF birlashtirish",
+   "desc": "Bir nechta PDF faylni siz tanlagan tartibda bitta faylga birlashtiring.",
+   "seo_title": "PDF fayllarni onlayn birlashtirish — bepul",
+   "seo_desc": "PDF fayllarni onlayn bepul bitta hujjatga birlashtiring. Fayllarni qoʻshing, tartibini belgilang va yuklab oling. Roʻyxatdan oʻtish shart emas.",
+   "button": "PDF birlashtirish",
+   "need": "Kamida 2 ta PDF fayl qoʻshing.",
+   "options": {},
+   "steps": [
+    "Ikki yoki undan ortiq PDF fayl qoʻshing.",
+    "Strelkalar yordamida ularni kerakli tartibga qoʻying.",
+    "“PDF birlashtirish” tugmasini bosing va natijani yuklab oling."
+   ]
+  },
+  "split": {
+   "name": "Sahifalarni ajratish",
+   "desc": "PDF dan kerakli sahifalarnigina saqlab qoling.",
+   "seo_title": "PDF dan sahifalarni onlayn ajratib olish",
+   "seo_desc": "PDF fayldan kerakli sahifalarni (masalan, 1-3,5) ajratib oling. Bepul, tez va maxfiy.",
+   "button": "Sahifalarni ajratish",
+   "need": "PDF fayl qoʻshing.",
+   "options": {
+    "pages": {
+     "label": "Saqlanadigan sahifalar",
+     "help": "Misol: 1-3,5 yozsangiz, 1, 2, 3 va 5-sahifalar qoladi."
+    }
+   },
+   "steps": [
+    "PDF faylingizni qoʻshing.",
+    "Saqlanadigan sahifalarni yozing, masalan 1-3,5.",
+    "“Sahifalarni ajratish” tugmasini bosing va yangi PDF ni yuklab oling."
+   ]
+  },
+  "rotate": {
+   "name": "PDF ni aylantirish",
+   "desc": "PDF ning barcha sahifalarini toʻgʻri holatga keltiring.",
+   "seo_title": "PDF sahifalarini onlayn aylantirish",
+   "seo_desc": "PDF ning barcha sahifalarini 90, 180 yoki 270 gradusga onlayn aylantiring. Bepul va maxfiy.",
+   "button": "PDF ni aylantirish",
+   "need": "PDF fayl qoʻshing.",
+   "options": {
+    "angle": {
+     "label": "Aylantirish",
+     "choices": {
+      "90": "90° soat yoʻnalishida",
+      "180": "180°",
+      "270": "90° soat strelkasiga teskari"
+     }
+    }
+   },
+   "steps": [
+    "PDF faylingizni qoʻshing.",
+    "Sahifalarni qanday aylantirishni tanlang.",
+    "“PDF ni aylantirish” tugmasini bosing va natijani yuklab oling."
+   ]
+  },
+  "compress": {
+   "name": "PDF hajmini kamaytirish",
+   "desc": "PDF ni elektron pochta va yuklash uchun kichikroq qiling.",
+   "seo_title": "PDF hajmini onlayn kamaytirish, siqish",
+   "seo_desc": "PDF hajmini elektron pochta va yuklashlar uchun kamaytiring. Past, oʻrta yoki yuqori siqishni tanlang. Bepul, roʻyxatdan oʻtishsiz.",
+   "button": "PDF ni siqish",
+   "need": "PDF fayl qoʻshing.",
+   "options": {
+    "level": {
+     "label": "Siqish darajasi",
+     "help": "Rasmli yoki skaner qilingan PDF larda eng yaxshi ishlaydi. Faqat matnli PDF lar allaqachon kichik.",
+     "choices": {
+      "low": "Past: eng yaxshi sifat",
+      "medium": "Oʻrta: tavsiya etiladi",
+      "high": "Yuqori: eng kichik fayl"
+     }
+    }
+   },
+   "steps": [
+    "PDF faylingizni qoʻshing.",
+    "Siqish darajasini tanlang. Koʻp fayllar uchun oʻrta daraja yaxshi.",
+    "“PDF ni siqish” tugmasini bosing va kichikroq faylni yuklab oling."
+   ]
+  },
+  "pdf2img": {
+   "name": "PDF dan rasmga",
+   "desc": "Har bir sahifani rasm sifatida saqlang. 50 sahifagacha.",
+   "seo_title": "PDF ni JPG yoki PNG rasmlarga onlayn aylantirish",
+   "seo_desc": "PDF ning har bir sahifasini PNG yoki JPG rasm sifatida saqlang va ZIP fayl qilib yuklab oling. Bepul va maxfiy.",
+   "button": "Rasmlarga aylantirish",
+   "need": "PDF fayl qoʻshing.",
+   "options": {
+    "fmt": {
+     "label": "Rasm formati",
+     "choices": {
+      "png": "PNG: aniq",
+      "jpg": "JPG: kichikroq fayllar"
+     }
+    }
+   },
+   "steps": [
+    "PDF faylingizni qoʻshing (50 sahifagacha).",
+    "Aniq rasmlar uchun PNG, kichikroq fayllar uchun JPG ni tanlang.",
+    "“Rasmlarga aylantirish” tugmasini bosing va ZIP faylni yuklab oling."
+   ]
+  },
+  "img2pdf": {
+   "name": "Rasmdan PDF ga",
+   "desc": "JPG va PNG rasmlarni bitta PDF ga joylang, har bir sahifaga bitta rasm.",
+   "seo_title": "JPG va PNG rasmlarni PDF ga onlayn aylantirish",
+   "seo_desc": "JPG va PNG rasmlarni bitta PDF faylga joylang, har bir sahifaga bitta rasm. Bepul, tez va maxfiy.",
+   "button": "PDF yaratish",
+   "need": "Kamida 1 ta JPG yoki PNG rasm qoʻshing.",
+   "options": {},
+   "steps": [
+    "JPG yoki PNG rasmlaringizni qoʻshing.",
+    "Strelkalar yordamida sahifalar tartibini belgilang.",
+    "“PDF yaratish” tugmasini bosing va natijani yuklab oling."
+   ]
+  },
+  "watermark": {
+   "name": "Suv belgisi qoʻshish",
+   "desc": "PDF ning har bir sahifasiga matnli belgi qoʻying.",
+   "seo_title": "PDF ga onlayn suv belgisi (watermark) qoʻshish",
+   "seo_desc": "PDF ning har bir sahifasiga matnli suv belgisi qoʻying. Bepul, tez va maxfiy.",
+   "button": "Suv belgisi qoʻshish",
+   "need": "PDF fayl qoʻshing.",
+   "options": {
+    "text": {
+     "label": "Suv belgisi matni",
+     "help": "Lotin harflari va raqamlar. ğ yoki ş kabi belgilar hozircha qoʻllab-quvvatlanmaydi."
+    }
+   },
+   "steps": [
+    "PDF faylingizni qoʻshing.",
+    "Suv belgisi matnini yozing.",
+    "“Suv belgisi qoʻshish” tugmasini bosing va natijani yuklab oling."
+   ]
+  },
+  "protect": {
+   "name": "PDF ga parol qoʻyish",
+   "desc": "PDF ni parol bilan himoyalang.",
+   "seo_title": "PDF ga onlayn parol qoʻyish",
+   "seo_desc": "PDF faylingizni parol bilan himoyalang (AES-256 shifrlash). Bepul, fayl va parol hech qachon saqlanmaydi.",
+   "button": "PDF ni himoyalash",
+   "need": "PDF fayl qoʻshing.",
+   "options": {
+    "password": {
+     "label": "Parol",
+     "help": "Kamida 4 ta belgi. Parolni unutsangiz, faylni ochib boʻlmaydi va Nexuz uni tiklay olmaydi."
+    }
+   },
+   "steps": [
+    "PDF faylingizni qoʻshing.",
+    "Parol oʻylab toping.",
+    "“PDF ni himoyalash” tugmasini bosing va himoyalangan faylni yuklab oling."
+   ]
+  },
+  "unlock": {
+   "name": "PDF dan parolni olib tashlash",
+   "desc": "Oʻzingizning PDF faylingizdan parolni olib tashlang.",
+   "seo_title": "PDF dan parolni onlayn olib tashlash",
+   "seo_desc": "Oʻzingizning PDF faylingizdan parolni olib tashlang. Parolni bilishingiz kerak. Bepul va maxfiy.",
+   "button": "Parolni olib tashlash",
+   "need": "PDF fayl qoʻshing.",
+   "options": {
+    "password": {
+     "label": "Joriy parol",
+     "help": "Parolni bilishingiz kerak. Nexuz parolni topa olmaydi va buza olmaydi."
+    }
+   },
+   "steps": [
+    "Himoyalangan PDF faylni qoʻshing.",
+    "Uning joriy parolini kiriting.",
+    "“Parolni olib tashlash” tugmasini bosing va parolsiz faylni yuklab oling."
+   ]
+  },
+  "uzbek": {
+   "name": "Oʻzbek alifbosi konvertori",
+   "desc": "Matnni kirill, joriy lotin va yangi Ö Ğ Ş Ç alifbosi oʻrtasida konvertatsiya qiling.",
+   "seo_title": "Oʻzbek kirill–lotin konvertori, yangi alifbo Ö Ğ Ş Ç",
+   "seo_desc": "Oʻzbek matnini kirill, joriy lotin va yangi Ö, Ğ, Ş, Ç alifbosi oʻrtasida bepul oʻgiring. Alifbo qonuni 2027-yil 22-aprelda kuchga kiradi.",
+   "button": "",
+   "need": "",
+   "options": {},
+   "steps": [
+    "Matnni chap oynaga joylang yoki yozing.",
+    "“Quyidagiga konvertatsiya qilish” roʻyxatidan kerakli alifboni tanlang.",
+    "Natijani nusxalang va ismlar hamda chet soʻzlarini tekshiring."
+   ]
+  }
+ }
+}

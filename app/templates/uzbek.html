@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container tool tool--wide">
+  <a class="back" href="{{ home_url }}#tools">{{ ui.back }}</a>
+  <h1>{{ text.name }}</h1>
+  <p class="tool__desc">{{ text.desc }}</p>
+
+  <div class="option uz-target">
+    <label for="uz-target">{{ ui.uz_convert_to }}</label>
+    <select id="uz-target">
+      <option value="latin_new">{{ ui.uz_opt_latin_new }}</option>
+      <option value="latin">{{ ui.uz_opt_latin }}</option>
+      <option value="cyrillic">{{ ui.uz_opt_cyrillic }}</option>
+    </select>
+  </div>
+  <p class="uz-detected" id="uz-detected" aria-live="polite"></p>
+
+  <div class="uz-panes">
+    <div>
+      <label for="uz-in">{{ ui.uz_in }}</label>
+      <textarea id="uz-in" rows="10" maxlength="20000" placeholder="{{ ui.uz_placeholder }}"></textarea>
+    </div>
+    <div>
+      <label for="uz-out">{{ ui.uz_out }}</label>
+      <textarea id="uz-out" rows="10" readonly></textarea>
+    </div>
+  </div>
+
+  <div class="uz-actions">
+    <button class="btn btn--primary" id="uz-copy" type="button">{{ ui.uz_copy }}</button>
+    <button class="btn btn--ghost" id="uz-example" type="button">{{ ui.uz_example }}</button>
+    <button class="btn btn--ghost" id="uz-clear" type="button">{{ ui.uz_clear }}</button>
+  </div>
+  <p class="status" id="uz-status" role="status" aria-live="polite"></p>
+
+  <aside class="note"><strong>{{ ui.uz_note_title }}</strong> {{ ui.uz_note_body }}</aside>
+</section>
+{% include "_more.html" %}
+{% endblock %}

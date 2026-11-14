@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% from "_cards.html" import card_grid %}
+{% block content %}
+<section class="hero">
+  <div class="container hero__grid">
+    <div>
+      <h1>{{ ui.hero_title }}</h1>
+      <p class="hero__lead">{{ ui.hero_lead }}</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="{{ home_url }}merge-pdf">{{ ui.cta_primary }}</a>
+        <a class="btn btn--ghost" href="#tools">{{ ui.cta_secondary }}</a>
+      </div>
+    </div>
+    <svg class="hero__art" viewBox="0 0 360 300" aria-hidden="true">
+      <rect x="40" y="46" width="170" height="220" rx="12" fill="#CDEBE8" transform="rotate(-8 125 156)"/>
+      <rect x="70" y="30" width="170" height="220" rx="12" fill="#9FD6D1" transform="rotate(-2 155 140)"/>
+      <rect x="110" y="24" width="170" height="220" rx="12" fill="#fff" stroke="#10243E" stroke-width="2.5" transform="rotate(5 195 134)"/>
+      <g transform="rotate(5 195 134)">
+        <rect x="132" y="50" width="52" height="24" rx="6" fill="#E4A11B"/>
+        <text x="158" y="67" text-anchor="middle" font-family="Onest, sans-serif" font-weight="600" font-size="13" fill="#10243E">PDF</text>
+        <rect x="132" y="96" width="126" height="8" rx="4" fill="#DDE3E8"/>
+        <rect x="132" y="116" width="110" height="8" rx="4" fill="#DDE3E8"/>
+        <rect x="132" y="136" width="120" height="8" rx="4" fill="#DDE3E8"/>
+        <rect x="132" y="170" width="70" height="46" rx="6" fill="#DDF1EF"/>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<section class="section" id="tools" aria-labelledby="tools-title">
+  <div class="container">
+    <div class="section__head">
+      <h2 id="tools-title">{{ ui.tools_title }}</h2>
+      <div class="filters" role="group" aria-label="{{ ui.filter_label }}" id="filters">
+        <button type="button" data-group="all" aria-pressed="true">{{ ui.filters.all }}</button>
+        {% for g in groups %}<button type="button" data-group="{{ g }}" aria-pressed="false">{{ ui.filters[g] }}</button>{% endfor %}
+      </div>
+    </div>
+    {{ card_grid(cards, True) }}
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container facts">
+    {% for f in ui.facts %}<div><h3>{{ f.t }}</h3><p>{{ f.p }}</p></div>{% endfor %}
+  </div>
+</section>
+{% endblock %}
