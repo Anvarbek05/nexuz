@@ -7,6 +7,7 @@ from fastapi.testclient import TestClient
 from app.config import LANGS
 from app.i18n import get_locale
 from app.main import app
+from app.routers.pages import INFO_SLUGS
 from app.tools import TOOLS
 
 client = TestClient(app)
@@ -64,7 +65,7 @@ def test_unknown_pages_give_404():
 def test_sitemap_and_robots():
     sm = client.get("/sitemap.xml")
     assert sm.status_code == 200 and "xml" in sm.headers["content-type"]
-    assert sm.text.count("<url>") == len(LANGS) * (len(TOOLS) + 1)
+    assert sm.text.count("<url>") == len(LANGS) * (len(TOOLS) + 1 + len(INFO_SLUGS))   # tools + home + pricing/privacy/terms
     assert "/ru/merge-pdf" in sm.text
     robots = client.get("/robots.txt").text
     assert "Sitemap: https://nexuz-vtcb.onrender.com/sitemap.xml" in robots

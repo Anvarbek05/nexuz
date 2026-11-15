@@ -38,7 +38,7 @@
   "back": "← Barcha vositalar",
   "how_title": "Qanday foydalaniladi",
   "more_title": "Boshqa vositalar",
-  "footer": "© 2026 Nexuz. Fayllar 25 MB gacha, hech qachon saqlanmaydi. Server uxlab qolgan boʻlsa, birinchi ochilish bir daqiqagacha choʻzilishi mumkin.",
+  "footer": "© 2026 Nexuz. Fayllar hech qachon saqlanmaydi. Server uxlab qolgan boʻlsa, birinchi ochilish bir daqiqagacha choʻzilishi mumkin.",
   "choose_files": "Fayllarni tanlang",
   "choose_file": "Faylni tanlang",
   "drop_many": "yoki ularni shu yerga tashlang",
@@ -83,7 +83,48 @@
   "uz_example_text": "O'zbekiston — Markaziy Osiyodagi go'zal mamlakat. Toshkent shahri chiroyli, g'alaba va choy haqida gaplashamiz.",
   "not_found_title": "Sahifa topilmadi",
   "not_found_text": "Bunday sahifa yoʻq. Vositalar roʻyxatini oching.",
-  "go_home": "Vositalarga oʻtish"
+  "go_home": "Vositalarga oʻtish",
+  "nav_pricing": "Tariflar",
+  "nav_login": "Kirish",
+  "nav_account": "Akkaunt",
+  "nav_privacy": "Maxfiylik",
+  "nav_terms": "Shartlar",
+  "footer_nav_label": "Sahifa pastidagi havolalar",
+  "acc_login_title": "Kirish",
+  "acc_login_desc": "Har kuni koʻproq bepul foydalanish uchun akkauntingizga kiring.",
+  "acc_login_button": "Kirish",
+  "acc_register_title": "Akkaunt ochish",
+  "acc_register_desc": "Bepul akkaunt kuniga koʻproq foydalanish va kattaroq fayllarni beradi.",
+  "acc_register_button": "Akkaunt ochish",
+  "acc_email": "Elektron pochta",
+  "acc_password": "Parol",
+  "acc_password_help": "Kamida 8 ta belgi.",
+  "acc_agree": "Akkaunt ochib, quyidagilarga rozi boʻlasiz:",
+  "acc_have_account": "Akkauntingiz bormi?",
+  "acc_no_account": "Hali akkauntingiz yoʻqmi?",
+  "acc_title": "Akkauntingiz",
+  "acc_desc": "Nexuz akkauntingiz.",
+  "acc_plan": "Tarif",
+  "acc_plan_guest": "Mehmon",
+  "acc_plan_free": "Bepul akkaunt",
+  "acc_plan_premium": "Premium",
+  "acc_premium_until": "{date} gacha",
+  "acc_today": "Bugun",
+  "acc_used": "{limit} tadan {used} ta foydalanildi",
+  "acc_max_file": "Eng katta fayl",
+  "acc_see_premium": "Tariflarni koʻrish",
+  "acc_logout": "Chiqish",
+  "acc_delete_title": "Akkauntimni oʻchirish",
+  "acc_delete_help": "Akkaunt va kirish maʼlumotlari butunlay oʻchiriladi. Tasdiqlash uchun parolingizni kiriting.",
+  "acc_delete_button": "Akkauntni butunlay oʻchirish",
+  "acc_delete_confirm": "Akkauntni oʻchirasizmi? Buni qaytarib boʻlmaydi.",
+  "acc_deleted": "Akkauntingiz oʻchirildi.",
+  "acc_network": "Serverga ulanib boʻlmadi. Internetni tekshirib, qayta urinib koʻring.",
+  "acc_working": "Kuting…",
+  "quota_left": "Bugun {limit} tadan {left} ta foydalanish qoldi.",
+  "quota_unlimited": "Kunlik cheklov yoʻq.",
+  "quota_register": "Koʻproq foydalanish uchun bepul akkaunt oching.",
+  "quota_premium": "Tariflarni koʻrish"
  },
  "tools": {
   "merge": {
@@ -272,6 +313,218 @@
     "“Quyidagiga konvertatsiya qilish” roʻyxatidan kerakli alifboni tanlang.",
     "Natijani nusxalang va ismlar hamda chet soʻzlarini tekshiring."
    ]
+  }
+ },
+ "errors": {
+  "generic": "Nimadir xato ketdi. Iltimos, qayta urinib koʻring.",
+  "forbidden": "Bu amalga ruxsat yoʻq.",
+  "slow_down": "Juda koʻp soʻrov yuborildi. Bir daqiqa kutib, qayta urinib koʻring.",
+  "too_many_attempts": "Juda koʻp urinish boʻldi. Birozdan soʻng qayta urinib koʻring.",
+  "no_file": "Fayl tanlanmadi.",
+  "bad_email": "Elektron pochta manzilini toʻgʻri kiriting.",
+  "password_short": "Parol kamida {min} ta belgidan iborat boʻlishi kerak.",
+  "password_long": "Parol {max} ta belgidan oshmasligi kerak.",
+  "password_is_email": "Parol elektron pochta manzilingiz bilan bir xil boʻlmasligi kerak.",
+  "email_taken": "Bu elektron pochta bilan akkaunt allaqachon bor. Kirib koʻring.",
+  "wrong_login": "Elektron pochta yoki parol notoʻgʻri.",
+  "not_signed_in": "Avval akkauntingizga kiring.",
+  "user_not_found": "Foydalanuvchi topilmadi.",
+  "daily_limit_guest": "Bugungi {limit} ta bepul foydalanish tugadi. Kuniga {free} ta foydalanish uchun bepul akkaunt oching. Cheklov Toshkent vaqti bilan yarim tunda yangilanadi.",
+  "daily_limit_free": "Bugungi {limit} ta foydalanish tugadi. Cheklov Toshkent vaqti bilan yarim tunda yangilanadi, yoki Premium tarifini koʻring.",
+  "file_too_big_guest": "{name} hajmi {max} MB dan katta. Bepul akkaunt bilan {free} MB gacha fayl yuklash mumkin.",
+  "file_too_big_free": "{name} hajmi {max} MB dan katta. Premium tarifida {premium} MB gacha fayl yuklash mumkin.",
+  "file_too_big_premium": "{name} hajmi {max} MB dan katta.",
+  "invalid_pdf": "{name} yaroqli PDF fayl emas.",
+  "pdf_locked": "{name} parol bilan himoyalangan. Avval parolni olib tashlang.",
+  "need_two_pdfs": "Kamida 2 ta PDF fayl tanlang.",
+  "bad_page_format": "Sahifalarni shunday yozing: 1-3,5",
+  "no_valid_pages": "Mos sahifa topilmadi. Bu PDF faylda {total} ta sahifa bor.",
+  "bad_angle": "Burish burchagi 90, 180 yoki 270 daraja boʻlishi kerak.",
+  "bad_level": "Nomaʼlum siqish darajasi.",
+  "bad_image_format": "Rasm formati png yoki jpg boʻlishi kerak.",
+  "too_many_pages": "Bu vosita eng koʻpi bilan {max} ta sahifani qoʻllaydi. Bu PDF faylda {total} ta sahifa bor.",
+  "not_jpg_png": "{name} JPG yoki PNG rasm emas.",
+  "bad_image": "{name} faylini rasm sifatida oʻqib boʻlmadi.",
+  "watermark_empty": "Suv belgisi matnini yozing.",
+  "watermark_chars": "Hozircha suv belgisi faqat oddiy lotin harflarini qoʻllaydi, Ğ yoki Ş kabi belgili harflarni emas.",
+  "pdf_password_short": "Kamida 4 ta belgidan iborat parol kiriting.",
+  "pdf_password_long": "Parol 64 ta belgidan oshmasligi kerak.",
+  "not_a_pdf": "Bu yaroqli PDF fayl emas.",
+  "no_password_set": "Bu PDF faylda olib tashlanadigan parol yoʻq.",
+  "wrong_pdf_password": "Parol notoʻgʻri.",
+  "pay_provider_off": "Bu provayder orqali toʻlash hozir mavjud emas.",
+  "accounts_unavailable": "Akkaunt ochish hozircha mavjud emas. Keyinroq qayta urinib koʻring."
+ },
+ "pricing": {
+  "title": "Tariflar va cheklovlar",
+  "seo_title": "Tariflar va cheklovlar",
+  "seo_desc": "Nexuzdan mehmon sifatida, bepul akkaunt bilan va Premium bilan nimalar qilish mumkinligini koʻring.",
+  "intro": "Barcha vositalarni bepul sinab koʻrish mumkin. Cheklovlar bepul server hamma uchun tez ishlashi uchun kerak.",
+  "feat_ops": "Kuniga {n} ta amal",
+  "feat_ops_unlimited": "Kunlik cheklov yoʻq",
+  "feat_size": "{mb} MB gacha fayllar",
+  "plans": {
+   "guest": {
+    "name": "Mehmon",
+    "price": "Bepul",
+    "note": "Akkaunt shart emas",
+    "features": [
+     "Barcha vositalar"
+    ]
+   },
+   "free": {
+    "name": "Bepul akkaunt",
+    "price": "Bepul",
+    "note": "Bir daqiqada ochiladi",
+    "features": [
+     "Barcha vositalar",
+     "Oʻzingizning kunlik cheklovingiz, tarmoqdagi boshqalar bilan umumiy emas"
+    ]
+   },
+   "premium": {
+    "name": "Premium",
+    "price": "Tez orada",
+    "note": "Hozircha sotuvda yoʻq",
+    "features": [
+     "Nexuz rivojiga hissa"
+    ],
+    "note_on": "Bitta toʻlov {days} kunlik Premium beradi. U oʻzi yangilanmaydi."
+   }
+  },
+  "cta_guest": "Vositalarni ochish",
+  "cta_free": "Bepul akkaunt ochish",
+  "cta_premium": "Tez orada",
+  "note": "Cheklovga faqat muvaffaqiyatli amallar kiradi. Kun Toshkent vaqti bilan yarim tunda tugaydi. Mehmonlar IP-manzil boʻyicha sanaladi, shuning uchun bir tarmoqdagi odamlar bitta hisoblagichni boʻlishadi. Cheklovlar oʻzgarishi mumkin.",
+  "price_on": "{days} kun uchun {price} soʻm",
+  "pay_with": "{provider} orqali toʻlash",
+  "need_login": "Premium sotib olish uchun kiring"
+ },
+ "legal": {
+  "updated_label": "Oxirgi yangilanish:",
+  "contact_title": "Aloqa",
+  "contact_text": "Bu sahifa boʻyicha savollar boʻlsa, yozing:",
+  "privacy": {
+   "title": "Maxfiylik siyosati",
+   "seo_title": "Maxfiylik siyosati",
+   "seo_desc": "Nexuz qanday maʼlumotlardan foydalanadi, nima uchun va ularni qanday oʻchirish mumkin.",
+   "intro": "Bu sahifada Nexuz sayti qanday maʼlumotlardan va nima uchun foydalanishi tushuntiriladi.",
+   "sections": [
+    {
+     "h": "Nexuzni kim yuritadi",
+     "p": [
+      "Nexuz — Oʻzbekistondagi jismoniy shaxs yuritadigan bepul onlayn PDF vositalari toʻplami."
+     ]
+    },
+    {
+     "h": "Sizning fayllaringiz",
+     "p": [
+      "Yuklagan fayllaringiz faqat soʻrov bajarilayotgan vaqtda (xotirada yoki vaqtinchalik faylda) saqlanadi va natija yuborilgach darhol oʻchiriladi. Nexuz nusxa saqlamaydi, mazmunini koʻrmaydi va boshqalarga bermaydi."
+     ]
+    },
+    {
+     "h": "Akkaunt maʼlumotlari",
+     "p": [
+      "Akkaunt ochsangiz, elektron pochta manzilingiz, parolingizning bir tomonlama xeshi (parolni oʻqiy olmaymiz), roʻyxatdan oʻtgan sana, tarifingiz va qurilmalaringizdagi kirish seanslari saqlanadi."
+     ]
+    },
+    {
+     "h": "Foydalanish hisoblagichlari",
+     "p": [
+      "Kunlik cheklovlarni qoʻllash uchun bugun nechta amal bajarganingizni sanaymiz. Kirgan foydalanuvchilar uchun hisoblagich akkauntga bogʻlanadi. Mehmonlar uchun u IP-manzildan hosil qilingan bir tomonlama kodga bogʻlanadi; manzilning oʻzi bazamizda saqlanmaydi. Hisoblagichlar bir necha kundan keyin oʻchiriladi."
+     ]
+    },
+    {
+     "h": "Cookie va shriftlar",
+     "p": [
+      "Nexuz faqat tizimga kirganingizdan keyin nexuz_session nomli bitta cookie oʻrnatadi. U sizni tizimda saqlab turadi, reklama yoki kuzatuv uchun ishlatilmaydi. Tahlil yoki reklama cookie-laridan foydalanmaymiz.",
+      "Sahifalar Google Fonts shriftlarini yuklaydi, shuning uchun brauzeringiz Google serverlariga murojaat qiladi va ular IP-manzilingizni oladi."
+     ]
+    },
+    {
+     "h": "Hosting va maʼlumot uzatish",
+     "p": [
+      "Sayt hosting provayderining serverlarida ishlaydi; ular Oʻzbekiston tashqarisida boʻlishi va texnik jurnallarni (IP-manzil, vaqt, sahifa manzili) yuritishi mumkin. Maʼlumotlaringizni sotmaymiz va reklama beruvchilarga bermaymiz. Qonun talab qilsa, maʼlumotlarni topshirishimiz mumkin."
+     ]
+    },
+    {
+     "h": "Sizning huquqlaringiz",
+     "p": [
+      "Akkauntni istalgan vaqtda “Akkaunt” sahifasida oʻchirishingiz mumkin. Bunda akkaunt maʼlumotlari, kirish seanslari va hisoblagichlar oʻchiriladi. Maʼlumotlaringizni koʻrsatish yoki tuzatishni elektron pochta orqali ham soʻrashingiz mumkin."
+     ]
+    },
+    {
+     "h": "Oʻzgarishlar",
+     "p": [
+      "Bu siyosatni yangilashimiz mumkin. Sahifa tepasidagi sana oxirgi versiyani koʻrsatadi."
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Foydalanish shartlari",
+   "seo_title": "Foydalanish shartlari",
+   "seo_desc": "Nexuzdan foydalanish qoidalari: fayllar, akkauntlar, cheklovlar va masʼuliyat.",
+   "intro": "Nexuz saytidan foydalanib, ushbu shartlarga rozi boʻlasiz.",
+   "sections": [
+    {
+     "h": "Nexuzdan foydalanish",
+     "p": [
+      "Nexuz onlayn PDF vositalari va oʻzbek alifbosi konvertorini taklif qiladi. Ulardan qonuniy maqsadlarda foydalanishingiz mumkin."
+     ]
+    },
+    {
+     "h": "Fayllaringiz va materiallaringiz",
+     "p": [
+      "Qayta ishlagan fayllaringiz uchun oʻzingiz javobgarsiz. Faqat foydalanish huquqiga ega boʻlgan fayllarni yuklang. Nexuzdan noqonuniy materiallar uchun yoki boshqalarga zarar yetkazish uchun foydalanmang, saytni ortiqcha yuklashga, hujum qilishga yoki cheklovlarini aylanib oʻtishga urinmang."
+     ]
+    },
+    {
+     "h": "Akkauntlar",
+     "p": [
+      "Haqiqiy elektron pochta manzilini kiriting, parolni sir saqlang va suiisteʼmol boʻlganidan shubhalansangiz, bizga xabar bering. Akkauntingizda sodir boʻlgan hamma narsa uchun oʻzingiz javobgarsiz. Shartlarni buzgan akkauntlarni bloklashimiz yoki oʻchirishimiz mumkin."
+     ]
+    },
+    {
+     "h": "Cheklovlar va tariflar",
+     "p": [
+      "Kunlik cheklovlar va fayl hajmi tarifingizga bogʻliq va “Tariflar” sahifasida koʻrsatilgan. Biz ularni oʻzgartirishimiz mumkin. Premium hozircha sotuvda yoʻq; pullik tarif boshlanishidan oldin uning narxi va shartlari eʼlon qilinadi."
+     ]
+    },
+    {
+     "h": "Natijalar va aniqlik",
+     "p": [
+      "Vositalar avtomatik ishlaydi va natijada xatolar boʻlishi mumkin, ayniqsa oʻzbek alifbosi konvertorida: ismlar va chet soʻzlarni doim tekshiring. Asl fayllaringizni saqlab qoʻying. Nexuz “boricha”, kafolatsiz taqdim etiladi."
+     ]
+    },
+    {
+     "h": "Mavjudlik",
+     "p": [
+      "Bepul server sekin ishlashi, harakatsizlikdan keyin uxlab qolishi yoki baʼzan ishlamasligi mumkin. Biz imkoniyatlarni oʻzgartirishimiz yoki olib tashlashimiz mumkin."
+     ]
+    },
+    {
+     "h": "Masʼuliyat",
+     "p": [
+      "Qonun ruxsat bergan darajada, Nexuz va uning egasi saytdan foydalanish yoki foydalana olmaslik sabab boʻlgan zararlar, jumladan buzilgan yoki yoʻqolgan fayllar uchun javobgar emas."
+     ]
+    },
+    {
+     "h": "Qoʻllaniladigan qonun",
+     "p": [
+      "Ushbu shartlarga Oʻzbekiston Respublikasi qonunchiligi qoʻllaniladi."
+     ]
+    },
+    {
+     "h": "Oʻzgarishlar",
+     "p": [
+      "Bu shartlarni oʻzgartirishimiz mumkin. Sahifa tepasidagi sana oxirgi versiyani koʻrsatadi. Oʻzgarishdan keyin saytdan foydalanishda davom etsangiz, ularga rozi boʻlgan hisoblanasiz."
+     ]
+    }
+   ]
+  },
+  "paid": {
+   "terms_limits": "Kunlik cheklovlar va fayl hajmi tarifingizga bogʻliq va “Tariflar” sahifasida koʻrsatilgan. Biz ularni oʻzgartirishimiz mumkin. Premium — belgilangan kunlar uchun oldindan toʻlanadigan tarif; u Click yoki Payme orqali toʻlanadi. U avtomatik yangilanmaydi, narxi esa toʻlashdan oldin “Tariflar” sahifasida koʻrsatiladi. Karta raqamingizni biz koʻrmaymiz: toʻlovni toʻlov provayderi bajaradi. Toʻlovda muammo chiqsa, bizga elektron pochta orqali yozing: biz masalani koʻrib chiqamiz va kerak boʻlsa, pulni qaytaramiz.",
+   "privacy_extra": "Premium sotib olsangiz, tarifingizni koʻrsatish va hisob-kitob uchun buyurtma yozuvini (summa, sana, toʻlov provayderi va toʻlov raqami) saqlaymiz. Karta raqamingizni olmaymiz. Buyurtma yozuvlari akkauntni oʻchirgandan keyin ham, elektron pochta manzilingizsiz, saqlanishi mumkin."
   }
  }
 }

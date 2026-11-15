@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ title }}</title>
   <meta name="description" content="{{ description }}">
-  <link rel="canonical" href="{{ canonical }}">
+  {% if noindex %}<meta name="robots" content="noindex, nofollow">
+  {% endif %}{% if google_verification %}<meta name="google-site-verification" content="{{ google_verification }}">
+  {% endif %}  <link rel="canonical" href="{{ canonical }}">
   {% for a in alternates %}<link rel="alternate" hreflang="{{ a.hreflang }}" href="{{ a.href }}">
   {% endfor %}<link rel="alternate" hreflang="x-default" href="{{ x_default }}">
   <meta property="og:type" content="website">
@@ -38,7 +40,10 @@
         <nav class="nav" aria-label="{{ ui.nav_label }}">
           <a href="{{ home_url }}#tools">{{ ui.nav_tools }}</a>
           <a href="{{ converter_url }}">{{ ui.nav_uzbek }}</a>
+          <a href="{{ pricing_url }}">{{ ui.nav_pricing }}</a>
         </nav>
+        {% if user %}<a class="btn btn--small" href="{{ account_url }}">{{ ui.nav_account }}</a>
+        {% else %}<a class="btn btn--small" href="{{ login_url }}">{{ ui.nav_login }}</a>{% endif %}
         <div class="langs" role="group" aria-label="{{ ui.lang_label }}">
           {% for l in langs %}<a href="{{ l.url }}" hreflang="{{ l.code }}" lang="{{ l.code }}"{% if l.current %} aria-current="true"{% endif %}>{{ l.code|upper }}</a>{% endfor %}
         </div>
@@ -54,6 +59,11 @@
     <div class="container footer__row">
       <a class="logo logo--small" href="{{ home_url }}"><img src="/static/img/logo.svg" width="26" height="26" alt=""><span>Nex<b>uz</b></span></a>
       <span>{{ ui.footer }}</span>
+      <nav class="footer__links" aria-label="{{ ui.footer_nav_label }}">
+        <a href="{{ pricing_url }}">{{ ui.nav_pricing }}</a>
+        <a href="{{ privacy_url }}">{{ ui.nav_privacy }}</a>
+        <a href="{{ terms_url }}">{{ ui.nav_terms }}</a>
+      </nav>
     </div>
   </footer>
 

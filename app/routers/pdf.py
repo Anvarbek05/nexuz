@@ -1,32 +1,39 @@
-"""Web routes for PDF tools. They only receive files, call a service, and send the result back."""
+"""Web routes for PDF tools. They check the visitor's limits, receive files, call a service, send the result back."""
 import io
 
-from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, File, Form, Request, UploadFile
 from fastapi.responses import StreamingResponse
 
-from app.config import MAX_UPLOAD_MB
-from app.services import pdf_tools
+from app.errors import ApiError
+from app.services import limits, pdf_tools
+from app.web import client_ip, current_user
 
 router = APIRouter(prefix="/api", tags=["pdf"])
 
 
-async def read_uploads(files: list[UploadFile]) -> list[tuple[str, bytes]]:
+def begin(request: Request) -> limits.Ticket:
+    """Who is this, and may they do one more operation today? (Raises a translated error if not.)"""
+    return limits.start(current_user(request), client_ip(request))
+
+
+async def read_uploads(files: list[UploadFile], ticket: limits.Ticket) -> list[tuple[str, bytes]]:
     uploads = []
     for f in files:
         data = await f.read()
-        if len(data) > MAX_UPLOAD_MB * 1024 * 1024:
-            raise HTTPException(413, f"{f.filename} is larger than {MAX_UPLOAD_MB} MB")
+        ticket.check_size(f.filename or "file", len(data))
         uploads.append((f.filename or "file", data))
     if not uploads:
-        raise HTTPException(400, "No file uploaded")
+        raise ApiError(400, "no_file")
     return uploads
 
 
-async def read_one(files: list[UploadFile]) -> bytes:
-    return (await read_uploads(files))[0][1]
+async def read_one(files: list[UploadFile], ticket: limits.Ticket) -> bytes:
+    return (await read_uploads(files, ticket))[0][1]
 
 
-def file_response(data: bytes, filename: str, mime: str = "application/pdf") -> StreamingResponse:
+def file_response(ticket: limits.Ticket, data: bytes, filename: str, mime: str = "application/pdf") -> StreamingResponse:
+    """Count the operation (it worked), then send the file."""
+    ticket.done()
     return StreamingResponse(
         io.BytesIO(data),
         media_type=mime,
@@ -35,46 +42,55 @@ def file_response(data: bytes, filename: str, mime: str = "application/pdf") -> 
 
 
 @router.post("/merge")
-async def merge(files: list[UploadFile] = File(...)):
-    return file_response(pdf_tools.merge_pdfs(await read_uploads(files)), "merged.pdf")
+async def merge(request: Request, files: list[UploadFile] = File(...)):
+    ticket = begin(request)
+    return file_response(ticket, pdf_tools.merge_pdfs(await read_uploads(files, ticket)), "merged.pdf")
 
 
 @router.post("/split")
-async def split(files: list[UploadFile] = File(...), pages: str = Form("1")):
-    return file_response(pdf_tools.extract_pages(await read_one(files), pages), "pages.pdf")
+async def split(request: Request, files: list[UploadFile] = File(...), pages: str = Form("1")):
+    ticket = begin(request)
+    return file_response(ticket, pdf_tools.extract_pages(await read_one(files, ticket), pages), "pages.pdf")
 
 
 @router.post("/rotate")
-async def rotate(files: list[UploadFile] = File(...), angle: int = Form(90)):
-    return file_response(pdf_tools.rotate_pdf(await read_one(files), angle), "rotated.pdf")
+async def rotate(request: Request, files: list[UploadFile] = File(...), angle: int = Form(90)):
+    ticket = begin(request)
+    return file_response(ticket, pdf_tools.rotate_pdf(await read_one(files, ticket), angle), "rotated.pdf")
 
 
 @router.post("/compress")
-async def compress(files: list[UploadFile] = File(...), level: str = Form("medium")):
-    return file_response(pdf_tools.compress_pdf(await read_one(files), level), "compressed.pdf")
+async def compress(request: Request, files: list[UploadFile] = File(...), level: str = Form("medium")):
+    ticket = begin(request)
+    return file_response(ticket, pdf_tools.compress_pdf(await read_one(files, ticket), level), "compressed.pdf")
 
 
 @router.post("/pdf2img")
-async def pdf_to_images(files: list[UploadFile] = File(...), fmt: str = Form("png")):
-    data = pdf_tools.pdf_to_images(await read_one(files), fmt)
-    return file_response(data, "pages.zip", "application/zip")
+async def pdf_to_images(request: Request, files: list[UploadFile] = File(...), fmt: str = Form("png")):
+    ticket = begin(request)
+    data = pdf_tools.pdf_to_images(await read_one(files, ticket), fmt)
+    return file_response(ticket, data, "pages.zip", "application/zip")
 
 
 @router.post("/img2pdf")
-async def images_to_pdf(files: list[UploadFile] = File(...)):
-    return file_response(pdf_tools.images_to_pdf(await read_uploads(files)), "images.pdf")
+async def images_to_pdf(request: Request, files: list[UploadFile] = File(...)):
+    ticket = begin(request)
+    return file_response(ticket, pdf_tools.images_to_pdf(await read_uploads(files, ticket)), "images.pdf")
 
 
 @router.post("/watermark")
-async def watermark(files: list[UploadFile] = File(...), text: str = Form("Nexuz")):
-    return file_response(pdf_tools.add_watermark(await read_one(files), text), "watermarked.pdf")
+async def watermark(request: Request, files: list[UploadFile] = File(...), text: str = Form("Nexuz")):
+    ticket = begin(request)
+    return file_response(ticket, pdf_tools.add_watermark(await read_one(files, ticket), text), "watermarked.pdf")
 
 
 @router.post("/protect")
-async def protect(files: list[UploadFile] = File(...), password: str = Form("")):
-    return file_response(pdf_tools.protect_pdf(await read_one(files), password), "protected.pdf")
+async def protect(request: Request, files: list[UploadFile] = File(...), password: str = Form("")):
+    ticket = begin(request)
+    return file_response(ticket, pdf_tools.protect_pdf(await read_one(files, ticket), password), "protected.pdf")
 
 
 @router.post("/unlock")
-async def unlock(files: list[UploadFile] = File(...), password: str = Form("")):
-    return file_response(pdf_tools.unlock_pdf(await read_one(files), password), "unlocked.pdf")
+async def unlock(request: Request, files: list[UploadFile] = File(...), password: str = Form("")):
+    ticket = begin(request)
+    return file_response(ticket, pdf_tools.unlock_pdf(await read_one(files, ticket), password), "unlocked.pdf")

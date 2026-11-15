@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container tool legal">
+  <h1>{{ doc.title }}</h1>
+  <p class="tool__desc">{{ legal.updated_label }} {{ updated }}</p>
+  <p>{{ doc.intro }}</p>
+  {% for s in doc.sections %}
+  <h2>{{ loop.index }}. {{ s.h }}</h2>
+  {% for para in s.p %}<p>{{ para }}</p>{% endfor %}
+  {% endfor %}
+  {% if contact_email %}<h2>{{ legal.contact_title }}</h2>
+  <p>{{ legal.contact_text }} <a href="mailto:{{ contact_email }}">{{ contact_email }}</a></p>{% endif %}
+  <p class="legal__other"><a href="{{ privacy_url }}">{{ ui.nav_privacy }}</a> · <a href="{{ terms_url }}">{{ ui.nav_terms }}</a></p>
+</section>
+{% endblock %}

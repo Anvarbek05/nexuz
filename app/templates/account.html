@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container tool tool--narrow">
+  <h1>{{ ui.acc_title }}</h1>
+  <dl class="facts-list">
+    <div><dt>{{ ui.acc_email }}</dt><dd>{{ user.email }}</dd></div>
+    <div><dt>{{ ui.acc_plan }}</dt><dd>{{ ui["acc_plan_" ~ summary.plan] }}{% if premium_until %} — {{ ui.acc_premium_until|replace("{date}", premium_until) }}{% endif %}</dd></div>
+    <div><dt>{{ ui.acc_today }}</dt><dd>{% if summary.per_day is none %}{{ ui.quota_unlimited }}{% else %}{{ ui.acc_used|replace("{used}", summary.used|string)|replace("{limit}", summary.per_day|string) }}{% endif %}</dd></div>
+    <div><dt>{{ ui.acc_max_file }}</dt><dd>{{ summary.max_mb }} {{ ui.mb }}</dd></div>
+  </dl>
+
+  {% if summary.plan == "free" %}<p><a href="{{ pricing_url }}">{{ ui.acc_see_premium }}</a></p>{% endif %}
+
+  <button class="btn btn--ghost" type="button" id="logout">{{ ui.acc_logout }}</button>
+  <p class="status" id="status" role="status" aria-live="polite"></p>
+
+  <details class="danger">
+    <summary>{{ ui.acc_delete_title }}</summary>
+    <p>{{ ui.acc_delete_help }}</p>
+    <form class="form" id="delete-form" novalidate>
+      <div class="option">
+        <label for="d-password">{{ ui.acc_password }}</label>
+        <input id="d-password" name="password" type="password" maxlength="128" autocomplete="current-password" required>
+      </div>
+      <button class="btn btn--danger" type="submit">{{ ui.acc_delete_button }}</button>
+    </form>
+  </details>
+</section>
+{% endblock %}

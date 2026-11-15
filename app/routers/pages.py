@@ -5,14 +5,19 @@ from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import FileResponse, RedirectResponse, Response
 from fastapi.templating import Jinja2Templates
 
-from app.config import (APP_NAME, APP_VERSION, BASE_DIR, DEFAULT_LANG, LANG_LABELS,
-                        LANG_LOCALES, LANGS, SITE_URL, STATIC_DIR)
+from app.config import (APP_NAME, PREMIUM_DAYS, PREMIUM_PRICE_SUM, payment_providers, APP_VERSION, BASE_DIR, CONTACT_EMAIL, DEFAULT_LANG, GOOGLE_SITE_VERIFICATION,
+                        LANG_LABELS, LANG_LOCALES, LANGS, LEGAL_UPDATED, PLANS, SITE_URL, STATIC_DIR)
 from app.i18n import get_locale
+from app.services import limits
 from app.tools import GROUPS, TOOLS, TOOLS_BY_ID, TOOLS_BY_SLUG, icon_svg
+from app.web import client_ip, current_user
 
 templates = Jinja2Templates(directory=str(BASE_DIR / "app" / "templates"))
 templates.env.globals["icon"] = icon_svg
 router = APIRouter(include_in_schema=False)
+
+# Pages that are not tools. They are listed in sitemap.xml. (login, register and account are not.)
+INFO_SLUGS = ("pricing", "privacy", "terms")
 
 
 def _json(data) -> str:
@@ -69,9 +74,13 @@ def client_tool(tool: dict, text: dict) -> dict:
 
 
 def render(request: Request, template: str, lang: str, slug: str, title: str, description: str,
-           jsonld: dict, client: dict, status_code: int = 200, **extra):
+           jsonld: dict, client: dict, status_code: int = 200, noindex: bool = False, **extra):
     loc = get_locale(lang)
+    user = extra.pop("user", None) or current_user(request)
     context = {
+        "user": user, "noindex": noindex, "google_verification": GOOGLE_SITE_VERIFICATION,
+        "contact_email": CONTACT_EMAIL,
+        **{f"{name}_url": path_for(lang, name) for name in ("login", "register", "account", "pricing", "privacy", "terms")},
         "lang": lang, "ui": loc["ui"], "version": APP_VERSION, "site_name": APP_NAME,
         "title": title, "description": description,
         "canonical": absolute(path_for(lang, slug)),
@@ -80,7 +89,7 @@ def render(request: Request, template: str, lang: str, slug: str, title: str, de
         "og_image": absolute("/static/img/og-image.png"), "og_locale": LANG_LOCALES[lang],
         "langs": [{"code": c, "label": LANG_LABELS[c], "url": path_for(c, slug), "current": c == lang} for c in LANGS],
         "home_url": path_for(lang), "converter_url": path_for(lang, TOOLS_BY_ID["uzbek"]["slug"]),
-        "jsonld": _json(jsonld), "client": _json(client),
+        "jsonld": _json(jsonld), "client": _json({**client, "lang": lang}),
         **extra,
     }
     return templates.TemplateResponse(request, template, context, status_code=status_code)
@@ -111,6 +120,87 @@ def home(request: Request, lang: str):
                   {"page": "home", "ui": ui}, cards=tool_cards(lang), groups=GROUPS)
 
 
+def webpage_jsonld(lang: str, slug: str, name: str, description: str) -> dict:
+    return {"@context": "https://schema.org", "@type": "WebPage", "name": name, "description": description,
+            "url": absolute(path_for(lang, slug)), "inLanguage": lang}
+
+
+def check_lang(lang: str) -> dict:
+    if lang not in LANGS:
+        raise HTTPException(404)
+    return get_locale(lang)
+
+
+@router.get("/{lang}/login")
+@router.get("/{lang}/register")
+def auth_page(request: Request, lang: str):
+    mode = request.url.path.rstrip("/").split("/")[-1]            # "login" or "register"
+    loc = check_lang(lang)
+    ui = loc["ui"]
+    if current_user(request):
+        return RedirectResponse(path_for(lang, "account"), status_code=302)
+    title, desc = ui[f"acc_{mode}_title"], ui[f"acc_{mode}_desc"]
+    return render(request, "auth.html", lang, mode, f"{title} | {APP_NAME}", desc,
+                  webpage_jsonld(lang, mode, title, desc), {"page": mode, "ui": ui}, noindex=True, mode=mode)
+
+
+@router.get("/{lang}/account")
+def account_page(request: Request, lang: str):
+    loc = check_lang(lang)
+    ui = loc["ui"]
+    user = current_user(request)
+    if user is None:
+        return RedirectResponse(path_for(lang, "login"), status_code=302)
+    summary = limits.Ticket(user, client_ip(request)).summary()
+    title = ui["acc_title"]
+    return render(request, "account.html", lang, "account", f"{title} | {APP_NAME}", ui["acc_desc"],
+                  webpage_jsonld(lang, "account", title, ui["acc_desc"]), {"page": "account", "ui": ui},
+                  noindex=True, user=user, summary=summary,
+                  premium_until=user["premium_until"][:10] if summary["plan"] == "premium" else "")
+
+
+PROVIDER_NAMES = {"click": "Click", "payme": "Payme"}
+
+
+@router.get("/{lang}/pricing")
+def pricing_page(request: Request, lang: str):
+    loc = check_lang(lang)
+    p = loc["pricing"]
+    providers = payment_providers()
+    plans = []
+    for key in ("guest", "free", "premium"):
+        rules, words = PLANS[key], p["plans"][key]
+        ops = p["feat_ops_unlimited"] if rules["per_day"] is None else p["feat_ops"].format(n=rules["per_day"])
+        price, note = words["price"], words["note"]
+        if key == "premium" and providers:       # payments are switched on: show the real price
+            price = p["price_on"].format(price=f"{PREMIUM_PRICE_SUM:,}".replace(",", " "), days=PREMIUM_DAYS)
+            note = words["note_on"].format(days=PREMIUM_DAYS)
+        plans.append({"key": key, "name": words["name"], "price": price, "note": note,
+                      "features": [ops, p["feat_size"].format(mb=rules["max_mb"])] + words["features"]})
+    buttons = [{"id": c, "label": p["pay_with"].replace("{provider}", PROVIDER_NAMES[c])} for c in providers]
+    return render(request, "pricing.html", lang, "pricing", f"{p['seo_title']} | {APP_NAME}", p["seo_desc"],
+                  webpage_jsonld(lang, "pricing", p["title"], p["seo_desc"]),
+                  {"page": "pricing", "ui": loc["ui"]}, p=p, plans=plans, buttons=buttons)
+
+
+@router.get("/{lang}/privacy")
+@router.get("/{lang}/terms")
+def legal_page(request: Request, lang: str):
+    which = request.url.path.rstrip("/").split("/")[-1]           # "privacy" or "terms"
+    loc = check_lang(lang)
+    doc = loc["legal"][which]
+    if payment_providers():     # payments are on: use the texts that talk about paying
+        paid = loc["legal"]["paid"]
+        doc = {**doc, "sections": [dict(sec) for sec in doc["sections"]]}
+        if which == "terms":
+            doc["sections"][3]["p"] = [paid["terms_limits"]]               # "Limits and plans"
+        else:
+            doc["sections"][2]["p"] = doc["sections"][2]["p"] + [paid["privacy_extra"]]   # "Account data"
+    return render(request, "legal.html", lang, which, f"{doc['seo_title']} | {APP_NAME}", doc["seo_desc"],
+                  webpage_jsonld(lang, which, doc["title"], doc["seo_desc"]),
+                  {"page": which, "ui": loc["ui"]}, doc=doc, legal=loc["legal"], updated=LEGAL_UPDATED[lang])
+
+
 @router.get("/{lang}/{slug}")
 def tool_page(request: Request, lang: str, slug: str):
     tool = TOOLS_BY_SLUG.get(slug)
@@ -129,13 +219,16 @@ def tool_page(request: Request, lang: str, slug: str):
     if tool.get("kind") == "text":
         return render(request, "uzbek.html", lang, slug, title, text["seo_desc"], jsonld,
                       {"page": "uzbek", "ui": loc["ui"]}, **common)
-    client = {"page": "tool", "ui": loc["ui"], "tool": client_tool(tool, text)}
-    return render(request, "tool.html", lang, slug, title, text["seo_desc"], jsonld, client, **common)
+    user = current_user(request)
+    account = limits.Ticket(user, client_ip(request)).summary()
+    client = {"page": "tool", "ui": loc["ui"], "tool": client_tool(tool, text), "account": account}
+    return render(request, "tool.html", lang, slug, title, text["seo_desc"], jsonld, client, user=user,
+                  account=account, **common)
 
 
 @router.get("/sitemap.xml")
 def sitemap():
-    slugs = [""] + [t["slug"] for t in TOOLS]
+    slugs = [""] + [t["slug"] for t in TOOLS] + list(INFO_SLUGS)
     lines = ['<?xml version="1.0" encoding="UTF-8"?>',
              '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">']
     for slug in slugs:

@@ -15,16 +15,25 @@ COMPRESS_LEVELS = {
 
 
 class PdfToolError(Exception):
-    """A problem the user can fix (bad file, wrong input). The message is shown on the site."""
+    """A problem the user can fix (bad file, wrong input).
+
+    `message` is English (for tests and logs). `code` and the extra keywords pick the translated text
+    "errors.<code>" in app/locales/*.json, for example PdfToolError("...", "invalid_pdf", name="a.pdf").
+    """
+
+    def __init__(self, message: str, code: str = "generic", **params):
+        super().__init__(message)
+        self.code = code
+        self.params = params
 
 
 def open_pdf(data: bytes, name: str = "file") -> fitz.Document:
     try:
         doc = fitz.open(stream=data, filetype="pdf")
     except Exception:
-        raise PdfToolError(f"{name} is not a valid PDF file")
+        raise PdfToolError(f"{name} is not a valid PDF file", "invalid_pdf", name=name)
     if doc.needs_pass:
-        raise PdfToolError(f"{name} is password protected")
+        raise PdfToolError(f"{name} is password protected", "pdf_locked", name=name)
     return doc
 
 
@@ -35,7 +44,7 @@ def _save(doc: fitz.Document) -> bytes:
 def merge_pdfs(files: list[tuple[str, bytes]]) -> bytes:
     """Join PDFs in the given order. `files` is a list of (filename, bytes)."""
     if len(files) < 2:
-        raise PdfToolError("Select at least 2 PDF files")
+        raise PdfToolError("Select at least 2 PDF files", "need_two_pdfs")
     result = fitz.open()
     for name, data in files:
         result.insert_pdf(open_pdf(data, name))
@@ -55,10 +64,10 @@ def parse_page_ranges(text: str, total: int) -> list[int]:
             else:
                 pages.append(int(part))
     except ValueError:
-        raise PdfToolError("Write pages like this: 1-3,5")
+        raise PdfToolError("Write pages like this: 1-3,5", "bad_page_format")
     pages = [p - 1 for p in pages if 1 <= p <= total]
     if not pages:
-        raise PdfToolError(f"No valid pages. This PDF has {total} pages")
+        raise PdfToolError(f"No valid pages. This PDF has {total} pages", "no_valid_pages", total=total)
     return pages
 
 
@@ -70,7 +79,7 @@ def extract_pages(data: bytes, pages_text: str) -> bytes:
 
 def rotate_pdf(data: bytes, angle: int) -> bytes:
     if angle not in (90, 180, 270):
-        raise PdfToolError("Rotation must be 90, 180 or 270 degrees")
+        raise PdfToolError("Rotation must be 90, 180 or 270 degrees", "bad_angle")
     doc = open_pdf(data)
     for page in doc:
         page.set_rotation((page.rotation + angle) % 360)
@@ -80,7 +89,7 @@ def rotate_pdf(data: bytes, angle: int) -> bytes:
 def compress_pdf(data: bytes, level: str = "medium") -> bytes:
     """Shrink images and clean the file. Never returns a file bigger than the original."""
     if level not in COMPRESS_LEVELS:
-        raise PdfToolError("Unknown compression level")
+        raise PdfToolError("Unknown compression level", "bad_level")
     dpi_threshold, dpi_target, quality = COMPRESS_LEVELS[level]
     doc = open_pdf(data)
     if hasattr(doc, "rewrite_images"):
@@ -92,10 +101,11 @@ def compress_pdf(data: bytes, level: str = "medium") -> bytes:
 def pdf_to_images(data: bytes, fmt: str = "png", dpi: int = 150) -> bytes:
     """Every page as an image, returned as a ZIP file."""
     if fmt not in ("png", "jpg"):
-        raise PdfToolError("Image format must be png or jpg")
+        raise PdfToolError("Image format must be png or jpg", "bad_image_format")
     doc = open_pdf(data)
     if len(doc) > MAX_IMAGE_PAGES:
-        raise PdfToolError(f"This tool supports up to {MAX_IMAGE_PAGES} pages. This PDF has {len(doc)}")
+        raise PdfToolError(f"This tool supports up to {MAX_IMAGE_PAGES} pages. This PDF has {len(doc)}",
+                           "too_many_pages", max=MAX_IMAGE_PAGES, total=len(doc))
     zoom = fitz.Matrix(dpi / 72, dpi / 72)
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
@@ -114,23 +124,23 @@ def images_to_pdf(files: list[tuple[str, bytes]]) -> bytes:
         elif data.startswith(b"\xff\xd8"):
             kind = "jpeg"
         else:
-            raise PdfToolError(f"{name} is not a JPG or PNG image")
+            raise PdfToolError(f"{name} is not a JPG or PNG image", "not_jpg_png", name=name)
         try:
             image = fitz.open(stream=data, filetype=kind)
             result.insert_pdf(fitz.open("pdf", image.convert_to_pdf()))
         except Exception:
-            raise PdfToolError(f"{name} could not be read as an image")
+            raise PdfToolError(f"{name} could not be read as an image", "bad_image", name=name)
     return _save(result)
 
 
 def add_watermark(data: bytes, text: str) -> bytes:
     text = text.strip()[:40]
     if not text:
-        raise PdfToolError("Write the watermark text")
+        raise PdfToolError("Write the watermark text", "watermark_empty")
     try:
         text.encode("cp1252")
     except UnicodeEncodeError:
-        raise PdfToolError("Watermark text supports Latin letters without marks like ğ or ş for now")
+        raise PdfToolError("Watermark text supports Latin letters without marks like ğ or ş for now", "watermark_chars")
     doc = open_pdf(data)
     for page in doc:
         rect = page.rect
@@ -149,9 +159,9 @@ def add_watermark(data: bytes, text: str) -> bytes:
 def protect_pdf(data: bytes, password: str) -> bytes:
     """Lock a PDF with a password (AES-256). The password is never stored."""
     if len(password) < 4:
-        raise PdfToolError("Use a password with at least 4 characters")
+        raise PdfToolError("Use a password with at least 4 characters", "pdf_password_short")
     if len(password) > 64:
-        raise PdfToolError("The password can have at most 64 characters")
+        raise PdfToolError("The password can have at most 64 characters", "pdf_password_long")
     doc = open_pdf(data)
     return doc.tobytes(
         encryption=fitz.PDF_ENCRYPT_AES_256,
@@ -165,9 +175,9 @@ def unlock_pdf(data: bytes, password: str) -> bytes:
     try:
         doc = fitz.open(stream=data, filetype="pdf")
     except Exception:
-        raise PdfToolError("This is not a valid PDF file")
+        raise PdfToolError("This is not a valid PDF file", "not_a_pdf")
     if not doc.needs_pass:
-        raise PdfToolError("This PDF has no password to remove")
+        raise PdfToolError("This PDF has no password to remove", "no_password_set")
     if not doc.authenticate(password):
-        raise PdfToolError("Wrong password")
+        raise PdfToolError("Wrong password", "wrong_pdf_password")
     return doc.tobytes(encryption=fitz.PDF_ENCRYPT_NONE, garbage=3, deflate=True)

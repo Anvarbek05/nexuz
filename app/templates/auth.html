@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container tool tool--narrow">
+  <h1>{{ ui["acc_" ~ mode ~ "_title"] }}</h1>
+  <p class="tool__desc">{{ ui["acc_" ~ mode ~ "_desc"] }}</p>
+
+  <form class="form" id="auth-form" data-mode="{{ mode }}" novalidate>
+    <div class="option">
+      <label for="f-email">{{ ui.acc_email }}</label>
+      <input id="f-email" name="email" type="email" autocomplete="email" maxlength="254" required>
+    </div>
+    <div class="option">
+      <label for="f-password">{{ ui.acc_password }}</label>
+      <input id="f-password" name="password" type="password" maxlength="128" required
+             autocomplete="{{ 'new-password' if mode == 'register' else 'current-password' }}">
+      {% if mode == "register" %}<p class="help">{{ ui.acc_password_help }}</p>{% endif %}
+    </div>
+    <button class="btn btn--primary btn--block" type="submit" id="auth-submit">{{ ui["acc_" ~ mode ~ "_button"] }}</button>
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+  </form>
+
+  {% if mode == "register" %}
+  <p class="help">{{ ui.acc_agree }} <a href="{{ terms_url }}">{{ ui.nav_terms }}</a> · <a href="{{ privacy_url }}">{{ ui.nav_privacy }}</a></p>
+  <p class="switch">{{ ui.acc_have_account }} <a href="{{ login_url }}">{{ ui.acc_login_title }}</a></p>
+  {% else %}
+  <p class="switch">{{ ui.acc_no_account }} <a href="{{ register_url }}">{{ ui.acc_register_title }}</a></p>
+  {% endif %}
+</section>
+{% endblock %}

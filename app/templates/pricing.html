@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container tool tool--wide">
+  <h1>{{ p.title }}</h1>
+  <p class="tool__desc">{{ p.intro }}</p>
+  <div class="plans">
+    {% for plan in plans %}
+    <article class="plan{% if plan.key == 'premium' and not buttons %} plan--soon{% endif %}">
+      <h2>{{ plan.name }}</h2>
+      <p class="plan__price">{{ plan.price }}</p>
+      <p class="plan__note">{{ plan.note }}</p>
+      <ul>{% for f in plan.features %}<li>{{ f }}</li>{% endfor %}</ul>
+      {% if plan.key == "guest" %}<a class="btn btn--ghost btn--block" href="{{ home_url }}#tools">{{ p.cta_guest }}</a>
+      {% elif plan.key == "free" %}<a class="btn btn--primary btn--block" href="{{ register_url }}">{{ p.cta_free }}</a>
+      {% elif not buttons %}<span class="btn btn--disabled btn--block">{{ p.cta_premium }}</span>
+      {% elif user %}{% for b in buttons %}<button class="btn btn--primary btn--block" type="button" data-pay="{{ b.id }}">{{ b.label }}</button>{% endfor %}
+      {% else %}<a class="btn btn--primary btn--block" href="{{ login_url }}">{{ p.need_login }}</a>{% endif %}
+    </article>
+    {% endfor %}
+  </div>
+  <p class="status" id="status" role="status" aria-live="polite"></p>
+  <p class="note">{{ p.note }}</p>
+</section>
+{% endblock %}

@@ -11,6 +11,7 @@
     <span>{{ ui.drop_many if tool.api.multiple else ui.drop_one }}</span>
   </label>
 
+  <p class="quota" id="quota" aria-live="polite"></p>
   <ul class="files" id="files"></ul>
   <p class="hint" id="hint" aria-live="polite">{{ text.need }}</p>
   <div class="options" id="options"></div>

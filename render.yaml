@@ -11,3 +11,30 @@ services:
         value: 3.11.9
       - key: SITE_URL
         value: https://nexuz-vtcb.onrender.com
+      # How many proxies are in front of the site (see HOW_TO_UPDATE.md, part 3). Check it with /api/admin/ip.
+      - key: PROXY_HOPS
+        value: "3"
+      # The three below are secrets or personal: type them in the Render dashboard (Environment tab).
+      - key: DATABASE_URL
+        sync: false
+      - key: ADMIN_TOKEN
+        sync: false
+      - key: CONTACT_EMAIL
+        sync: false
+      - key: GOOGLE_SITE_VERIFICATION
+        sync: false
+      # Payments (leave empty until you have a contract with Click or Payme; see HOW_TO_UPDATE.md, part 6).
+      - key: PREMIUM_PRICE_SUM
+        value: "29000"
+      - key: CLICK_SERVICE_ID
+        sync: false
+      - key: CLICK_MERCHANT_ID
+        sync: false
+      - key: CLICK_SECRET_KEY
+        sync: false
+      - key: PAYME_MERCHANT_ID
+        sync: false
+      - key: PAYME_KEY
+        sync: false
+      - key: PAYME_TEST
+        value: "0"

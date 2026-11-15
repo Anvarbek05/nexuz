@@ -38,7 +38,7 @@
   "back": "← All tools",
   "how_title": "How to use",
   "more_title": "More tools",
-  "footer": "© 2026 Nexuz. Files up to 25 MB, never stored. The first load can take up to a minute while the server wakes up.",
+  "footer": "© 2026 Nexuz. Files are never stored. The first load can take up to a minute while the server wakes up.",
   "choose_files": "Choose files",
   "choose_file": "Choose a file",
   "drop_many": "or drag and drop them here",
@@ -83,7 +83,48 @@
   "uz_example_text": "O'zbekiston — Markaziy Osiyodagi go'zal mamlakat. Toshkent shahri chiroyli, g'alaba va choy haqida gaplashamiz.",
   "not_found_title": "Page not found",
   "not_found_text": "This page does not exist. Try the list of tools.",
-  "go_home": "Go to the tools"
+  "go_home": "Go to the tools",
+  "nav_pricing": "Pricing",
+  "nav_login": "Sign in",
+  "nav_account": "Account",
+  "nav_privacy": "Privacy",
+  "nav_terms": "Terms",
+  "footer_nav_label": "Footer links",
+  "acc_login_title": "Sign in",
+  "acc_login_desc": "Sign in to get more free uses every day.",
+  "acc_login_button": "Sign in",
+  "acc_register_title": "Create an account",
+  "acc_register_desc": "A free account gives you more daily uses and bigger files.",
+  "acc_register_button": "Create account",
+  "acc_email": "Email",
+  "acc_password": "Password",
+  "acc_password_help": "At least 8 characters.",
+  "acc_agree": "By creating an account you accept:",
+  "acc_have_account": "Already have an account?",
+  "acc_no_account": "No account yet?",
+  "acc_title": "Your account",
+  "acc_desc": "Your Nexuz account.",
+  "acc_plan": "Plan",
+  "acc_plan_guest": "Guest",
+  "acc_plan_free": "Free account",
+  "acc_plan_premium": "Premium",
+  "acc_premium_until": "until {date}",
+  "acc_today": "Today",
+  "acc_used": "{used} of {limit} uses",
+  "acc_max_file": "Biggest file",
+  "acc_see_premium": "See the plans",
+  "acc_logout": "Sign out",
+  "acc_delete_title": "Delete my account",
+  "acc_delete_help": "This permanently deletes your account and sign-in data. Enter your password to confirm.",
+  "acc_delete_button": "Delete account permanently",
+  "acc_delete_confirm": "Delete your account? This cannot be undone.",
+  "acc_deleted": "Your account was deleted.",
+  "acc_network": "Could not reach the server. Check your connection and try again.",
+  "acc_working": "Please wait…",
+  "quota_left": "{left} of {limit} uses left today.",
+  "quota_unlimited": "No daily limit.",
+  "quota_register": "Create a free account for more.",
+  "quota_premium": "See the plans"
  },
  "tools": {
   "merge": {
@@ -272,6 +313,218 @@
     "Choose the alphabet you want in “Convert to”.",
     "Copy the result and check names and foreign words."
    ]
+  }
+ },
+ "errors": {
+  "generic": "Something went wrong. Please try again.",
+  "forbidden": "You are not allowed to do this.",
+  "slow_down": "Too many requests. Wait a minute and try again.",
+  "too_many_attempts": "Too many attempts. Please try again a little later.",
+  "no_file": "No file was selected.",
+  "bad_email": "Please enter a valid email address.",
+  "password_short": "The password must have at least {min} characters.",
+  "password_long": "The password can have at most {max} characters.",
+  "password_is_email": "The password must not be the same as your email.",
+  "email_taken": "An account with this email already exists. Try signing in.",
+  "wrong_login": "Wrong email or password.",
+  "not_signed_in": "Please sign in first.",
+  "user_not_found": "User not found.",
+  "daily_limit_guest": "You have used all {limit} free uses for today. Create a free account to get {free} uses per day. The limit resets at midnight Tashkent time.",
+  "daily_limit_free": "You have used all {limit} uses for today. The limit resets at midnight Tashkent time, or see the Premium plan.",
+  "file_too_big_guest": "{name} is larger than {max} MB. With a free account you can upload files up to {free} MB.",
+  "file_too_big_free": "{name} is larger than {max} MB. The Premium plan allows files up to {premium} MB.",
+  "file_too_big_premium": "{name} is larger than {max} MB.",
+  "invalid_pdf": "{name} is not a valid PDF file.",
+  "pdf_locked": "{name} is password protected. Remove the password first.",
+  "need_two_pdfs": "Select at least 2 PDF files.",
+  "bad_page_format": "Write pages like this: 1-3,5",
+  "no_valid_pages": "No valid pages. This PDF has {total} pages.",
+  "bad_angle": "Rotation must be 90, 180 or 270 degrees.",
+  "bad_level": "Unknown compression level.",
+  "bad_image_format": "Image format must be png or jpg.",
+  "too_many_pages": "This tool supports up to {max} pages. This PDF has {total}.",
+  "not_jpg_png": "{name} is not a JPG or PNG image.",
+  "bad_image": "{name} could not be read as an image.",
+  "watermark_empty": "Write the watermark text.",
+  "watermark_chars": "The watermark supports only plain Latin letters for now, without marks like Ğ or Ş.",
+  "pdf_password_short": "Use a password with at least 4 characters.",
+  "pdf_password_long": "The password can have at most 64 characters.",
+  "not_a_pdf": "This is not a valid PDF file.",
+  "no_password_set": "This PDF has no password to remove.",
+  "wrong_pdf_password": "Wrong password.",
+  "pay_provider_off": "Payment with this provider is not available right now.",
+  "accounts_unavailable": "Creating accounts is not available yet. Please try again later."
+ },
+ "pricing": {
+  "title": "Plans and limits",
+  "seo_title": "Plans and limits",
+  "seo_desc": "See what you can do with Nexuz as a guest, with a free account, and with Premium.",
+  "intro": "All tools are free to try. Limits keep the free server fast for everyone.",
+  "feat_ops": "{n} operations per day",
+  "feat_ops_unlimited": "No daily limit",
+  "feat_size": "Files up to {mb} MB",
+  "plans": {
+   "guest": {
+    "name": "Guest",
+    "price": "Free",
+    "note": "No account needed",
+    "features": [
+     "All tools"
+    ]
+   },
+   "free": {
+    "name": "Free account",
+    "price": "Free",
+    "note": "Create an account in a minute",
+    "features": [
+     "All tools",
+     "Your own daily limit, not shared with others on your network"
+    ]
+   },
+   "premium": {
+    "name": "Premium",
+    "price": "Coming soon",
+    "note": "Not on sale yet",
+    "features": [
+     "Supports the work on Nexuz"
+    ],
+    "note_on": "One payment gives {days} days of Premium. It does not renew by itself."
+   }
+  },
+  "cta_guest": "Use the tools",
+  "cta_free": "Create a free account",
+  "cta_premium": "Coming soon",
+  "note": "Limits count successful operations. The day ends at midnight in Tashkent. Guests are counted by IP address, so people on the same network share one counter. Limits may change.",
+  "price_on": "{price} UZS for {days} days",
+  "pay_with": "Pay with {provider}",
+  "need_login": "Sign in to buy Premium"
+ },
+ "legal": {
+  "updated_label": "Last updated:",
+  "contact_title": "Contact",
+  "contact_text": "Questions about this page? Write to",
+  "privacy": {
+   "title": "Privacy Policy",
+   "seo_title": "Privacy Policy",
+   "seo_desc": "What data Nexuz uses, why, and how you can delete it.",
+   "intro": "This page explains which data the Nexuz website uses and why.",
+   "sections": [
+    {
+     "h": "Who runs Nexuz",
+     "p": [
+      "Nexuz is a free online PDF toolbox run by an individual in Uzbekistan."
+     ]
+    },
+    {
+     "h": "Your files",
+     "p": [
+      "Files you upload are held only while your request is processed (in memory or in a temporary file) and are deleted right after your result is sent. Nexuz does not keep copies, does not look at the contents and does not share them."
+     ]
+    },
+    {
+     "h": "Account data",
+     "p": [
+      "If you create an account, we store your email address, a one-way hash of your password (we cannot read your password), the date you registered, your plan, and the sign-in sessions of your devices."
+     ]
+    },
+    {
+     "h": "Usage counters",
+     "p": [
+      "To apply daily limits we count how many operations you did today. For signed-in users the counter belongs to the account. For guests it belongs to a one-way code made from the IP address; the address itself is not saved in our database. Counters are deleted after a few days."
+     ]
+    },
+    {
+     "h": "Cookies and fonts",
+     "p": [
+      "Nexuz sets one cookie, named nexuz_session, only after you sign in. It keeps you signed in and is not used for advertising or tracking. We do not use analytics or advertising cookies.",
+      "Pages load fonts from Google Fonts, so your browser contacts Google servers, which receive your IP address."
+     ]
+    },
+    {
+     "h": "Hosting and sharing",
+     "p": [
+      "The website runs on servers of a hosting provider that may be outside Uzbekistan and may keep technical logs (IP address, time and page address). We do not sell your data and do not share it with advertisers. We may share data if the law requires it."
+     ]
+    },
+    {
+     "h": "Your rights",
+     "p": [
+      "You can delete your account at any time on the Account page. This deletes your account data, sign-in sessions and counters. You can also ask us by email to show or correct your data."
+     ]
+    },
+    {
+     "h": "Changes",
+     "p": [
+      "We may update this policy. The date at the top shows the latest version."
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Terms of Use",
+   "seo_title": "Terms of Use",
+   "seo_desc": "The rules for using Nexuz: files, accounts, limits and responsibility.",
+   "intro": "By using the Nexuz website you accept these terms.",
+   "sections": [
+    {
+     "h": "Using Nexuz",
+     "p": [
+      "Nexuz offers online PDF tools and an Uzbek alphabet converter. You may use them for lawful purposes."
+     ]
+    },
+    {
+     "h": "Your files and content",
+     "p": [
+      "You are responsible for the files you process. Upload only files you have the right to use. Do not use Nexuz for illegal content or to harm others, and do not try to overload, attack or bypass the limits of the website."
+     ]
+    },
+    {
+     "h": "Accounts",
+     "p": [
+      "Give a real email address, keep your password secret and tell us if you suspect misuse. You are responsible for what happens under your account. We may suspend or delete accounts that break these terms."
+     ]
+    },
+    {
+     "h": "Limits and plans",
+     "p": [
+      "Daily limits and file sizes depend on your plan and are shown on the Pricing page. We may change them. Premium is not on sale yet; before any paid plan starts, its price and conditions will be published."
+     ]
+    },
+    {
+     "h": "Results and accuracy",
+     "p": [
+      "The tools work automatically and results can contain mistakes, especially the Uzbek alphabet converter: always check names and foreign words. Keep your original files. Nexuz is provided “as is”, without guarantee."
+     ]
+    },
+    {
+     "h": "Availability",
+     "p": [
+      "The free server may be slow, may sleep after inactivity or may be unavailable at times. We may change or remove features."
+     ]
+    },
+    {
+     "h": "Liability",
+     "p": [
+      "As far as the law allows, Nexuz and its owner are not liable for losses caused by using or not being able to use the website, including damaged or lost files."
+     ]
+    },
+    {
+     "h": "Governing law",
+     "p": [
+      "These terms are governed by the laws of the Republic of Uzbekistan."
+     ]
+    },
+    {
+     "h": "Changes",
+     "p": [
+      "We may change these terms. The date at the top shows the latest version. Using the website after a change means you accept it."
+     ]
+    }
+   ]
+  },
+  "paid": {
+   "terms_limits": "Daily limits and file sizes depend on your plan and are shown on the Pricing page. We may change them. Premium is a prepaid pass for a fixed number of days, paid through Click or Payme. It does not renew automatically, and its price is shown on the Pricing page before you pay. We never see your card number: the payment provider handles it. If a payment goes wrong, write to us by email and we will look into it and, where appropriate, refund it.",
+   "privacy_extra": "If you buy Premium, we keep a record of the order (amount, date, payment provider and payment number) to show your plan and for accounting. We never receive your card number. Order records may be kept after you delete your account, without your email address."
   }
  }
 }

@@ -1,12 +1,31 @@
 // Nexuz frontend. The server renders every page (with its language); this file only adds behaviour.
-// window.NEXUZ = { page: "home" | "tool" | "uzbek" | "404", ui: {...texts...}, tool: {...} }
+// window.NEXUZ = { page: "home" | "tool" | "uzbek" | "login" | "register" | "account" | ..., lang, ui: {...texts...}, tool: {...}, account: {...} }
 (() => {
   "use strict";
 
   const N = window.NEXUZ;
   const ui = N.ui;
-  const MAX_MB = 25;
   const $ = s => document.querySelector(s);
+
+  // fetch() that tells the server our language, so error messages come back in it
+  const api = (url, options = {}) =>
+    fetch(url, { ...options, headers: { "X-Lang": N.lang, ...(options.headers || {}) } });
+
+  // The server sends errors as {"detail": "text in our language"}
+  async function errorText(res) {
+    try {
+      const detail = (await res.json()).detail;
+      if (typeof detail === "string") return detail;
+    } catch (_) {}
+    return ui.err_generic;
+  }
+
+  function showStatus(msg, isError = false) {
+    const el = $("#status");
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.toggle("is-error", isError);
+  }
 
   // t("hint_many", {n: 3}) -> text from the current language with {n} filled in
   const t = (key, vars = {}) => String(ui[key] ?? key).replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? "");
@@ -29,6 +48,30 @@
   // ---------------- file tools ----------------
   function initTool(tool) {
     let files = [];
+    let maxMb = (N.account && N.account.max_mb) || 25;   // biggest file for this visitor's plan
+
+    // "3 of 5 uses left today. Create a free account for more."
+    function renderQuota(q) {
+      const el = $("#quota");
+      if (!el || !q) return;
+      el.replaceChildren();
+      if (q.per_day === null) { el.textContent = ui.quota_unlimited; return; }
+      el.append(t("quota_left", { left: q.left, limit: q.per_day }) + " ");
+      const link = document.createElement("a");
+      link.href = "/" + N.lang + (q.plan === "guest" ? "/register" : "/pricing");
+      link.textContent = q.plan === "guest" ? ui.quota_register : ui.quota_premium;
+      el.append(link);
+    }
+
+    async function refreshQuota() {
+      try {
+        const res = await api("/api/me");
+        if (!res.ok) return;
+        const data = await res.json();
+        maxMb = data.quota.max_mb;
+        renderQuota(data.quota);
+      } catch (_) {}
+    }
 
     const setStatus = (msg, isError = false) => {
       const el = $("#status");
@@ -122,11 +165,11 @@
       const exts = tool.accept.split(",").map(e => e.trim().toLowerCase());
       const incoming = [...fileList];
       const valid = incoming.filter(f => exts.some(e => f.name.toLowerCase().endsWith(e)));
-      const tooBig = valid.find(f => f.size > MAX_MB * 1048576);
+      const tooBig = valid.find(f => f.size > maxMb * 1048576);
       if (valid.length < incoming.length) setStatus(t("err_ext", { exts: exts.join(", ") }), true);
-      else if (tooBig) setStatus(t("err_big", { name: tooBig.name, max: MAX_MB }), true);
+      else if (tooBig) setStatus(t("err_big", { name: tooBig.name, max: maxMb }), true);
       else setStatus("");
-      const ok = valid.filter(f => f.size <= MAX_MB * 1048576);
+      const ok = valid.filter(f => f.size <= maxMb * 1048576);
       files = tool.multiple ? files.concat(ok) : ok.slice(0, 1);
       $("#result").hidden = true;
       renderFiles();
@@ -168,20 +211,14 @@
       $("#result").hidden = true;
       setStatus(ui.working);
       try {
-        const res = await fetch(tool.endpoint, { method: "POST", body });
-        if (!res.ok) {
-          let msg = ui.err_generic;
-          try {
-            const detail = (await res.json()).detail;
-            if (typeof detail === "string") msg = detail;   // short explanation from the server (English)
-          } catch (_) {}
-          throw new Error(msg);
-        }
+        const res = await api(tool.endpoint, { method: "POST", body });
+        if (!res.ok) throw new Error(await errorText(res));   // short explanation from the server, in our language
         showResult(await res.blob(), outputName(), originalSize);
         setStatus("");
       } catch (err) {
         setStatus(err.message, true);
       }
+      refreshQuota();
       $("#run").disabled = files.length < tool.min;
     }
 
@@ -194,6 +231,7 @@
 
     renderOptions();
     renderFiles();
+    renderQuota(N.account);
   }
 
   // ---------------- Uzbek alphabet converter ----------------
@@ -219,12 +257,12 @@
         }
         const mine = ++latest;
         try {
-          const res = await fetch("/api/uzbek/convert", {
+          const res = await api("/api/uzbek/convert", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text, target: $("#uz-target").value }),
           });
-          if (!res.ok) throw new Error(ui.uz_err_long);
+          if (!res.ok) throw new Error(res.status === 429 ? await errorText(res) : ui.uz_err_long);
           const data = await res.json();
           if (mine !== latest) return;   // a newer request is already running
           $("#uz-out").value = data.text;
@@ -258,6 +296,78 @@
     });
   }
 
-  const pages = { home: initHome, tool: () => initTool(N.tool), uzbek: initUzbek };
+  // ---------------- sign in / create account ----------------
+  function initAuth() {
+    const form = $("#auth-form");
+    const button = $("#auth-submit");
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      const mode = form.dataset.mode;                       // "login" or "register"
+      button.disabled = true;
+      showStatus(ui.acc_working);
+      try {
+        const res = await api("/api/auth/" + mode, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: $("#f-email").value, password: $("#f-password").value }),
+        });
+        if (!res.ok) throw new Error(await errorText(res));
+        location.href = "/" + N.lang + "/" + (mode === "register" ? "account" : "");
+      } catch (err) {
+        showStatus(err instanceof TypeError ? ui.acc_network : err.message, true);
+        button.disabled = false;
+      }
+    });
+  }
+
+  // ---------------- account page: sign out, delete ----------------
+  function initAccount() {
+    $("#logout").addEventListener("click", async () => {
+      try { await api("/api/auth/logout", { method: "POST" }); } catch (_) {}
+      location.href = "/" + N.lang + "/";
+    });
+    $("#delete-form").addEventListener("submit", async e => {
+      e.preventDefault();
+      if (!confirm(ui.acc_delete_confirm)) return;
+      showStatus(ui.acc_working);
+      try {
+        const res = await api("/api/auth/delete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password: $("#d-password").value }),
+        });
+        if (!res.ok) throw new Error(await errorText(res));
+        showStatus(ui.acc_deleted);
+        setTimeout(() => { location.href = "/" + N.lang + "/"; }, 1500);
+      } catch (err) {
+        showStatus(err instanceof TypeError ? ui.acc_network : err.message, true);
+      }
+    });
+  }
+
+  // ---------------- pricing page: pay for Premium ----------------
+  function initPricing() {
+    document.querySelectorAll("[data-pay]").forEach(button => button.addEventListener("click", async () => {
+      button.disabled = true;
+      showStatus(ui.acc_working);
+      try {
+        const res = await api("/api/pay/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ provider: button.dataset.pay }),
+        });
+        if (!res.ok) throw new Error(await errorText(res));
+        location.href = (await res.json()).url;            // the provider's payment page
+      } catch (err) {
+        showStatus(err instanceof TypeError ? ui.acc_network : err.message, true);
+        button.disabled = false;
+      }
+    }));
+  }
+
+  const pages = {
+    home: initHome, tool: () => initTool(N.tool), uzbek: initUzbek,
+    login: initAuth, register: initAuth, account: initAccount, pricing: initPricing,
+  };
   if (pages[N.page]) pages[N.page]();
 })();
