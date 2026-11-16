@@ -124,7 +124,14 @@
   "quota_left": "Bugun {limit} tadan {left} ta foydalanish qoldi.",
   "quota_unlimited": "Kunlik cheklov yoʻq.",
   "quota_register": "Koʻproq foydalanish uchun bepul akkaunt oching.",
-  "quota_premium": "Tariflarni koʻrish"
+  "quota_premium": "Tariflarni koʻrish",
+  "uz_upload": "PDF yoki TXT yuklash",
+  "uz_upload_help": "Haqiqiy matnli PDF yoki .txt fayl. Natija oʻng tomonda chiqadi. Skaner qilingan PDF (rasmlar) hozircha ishlamaydi.",
+  "uz_download": ".txt sifatida yuklab olish",
+  "uz_file_reading": "Fayl oʻqilmoqda…",
+  "uz_file_done": "Tayyor: “{name}” faylidan {chars} belgi.",
+  "theme_to_dark": "Qorongʻi mavzuga oʻtish",
+  "theme_to_light": "Yorugʻ mavzuga oʻtish"
  },
  "tools": {
   "merge": {
@@ -353,7 +360,10 @@
   "no_password_set": "Bu PDF faylda olib tashlanadigan parol yoʻq.",
   "wrong_pdf_password": "Parol notoʻgʻri.",
   "pay_provider_off": "Bu provayder orqali toʻlash hozir mavjud emas.",
-  "accounts_unavailable": "Akkaunt ochish hozircha mavjud emas. Keyinroq qayta urinib koʻring."
+  "accounts_unavailable": "Akkaunt ochish hozircha mavjud emas. Keyinroq qayta urinib koʻring.",
+  "uz_file_type": "PDF yoki TXT fayl yuklang.",
+  "pdf_no_text": "{name} faylida oʻqiladigan matn yoʻq. Bu skaner qilingan PDF (faqat rasmlar) kabi koʻrinadi. Skaner qilingan PDF hozircha qoʻllanmaydi.",
+  "uz_text_too_long": "Faylda matn juda koʻp. Chegara — {max} belgi."
  },
  "pricing": {
   "title": "Tariflar va cheklovlar",
@@ -397,7 +407,8 @@
   "note": "Cheklovga faqat muvaffaqiyatli amallar kiradi. Kun Toshkent vaqti bilan yarim tunda tugaydi. Mehmonlar IP-manzil boʻyicha sanaladi, shuning uchun bir tarmoqdagi odamlar bitta hisoblagichni boʻlishadi. Cheklovlar oʻzgarishi mumkin.",
   "price_on": "{days} kun uchun {price} soʻm",
   "pay_with": "{provider} orqali toʻlash",
-  "need_login": "Premium sotib olish uchun kiring"
+  "need_login": "Premium sotib olish uchun kiring",
+  "feat_ops_one": "Kuniga 1 ta amal"
  },
  "legal": {
   "updated_label": "Oxirgi yangilanish:",
@@ -437,7 +448,8 @@
      "h": "Cookie va shriftlar",
      "p": [
       "Nexuz faqat tizimga kirganingizdan keyin nexuz_session nomli bitta cookie oʻrnatadi. U sizni tizimda saqlab turadi, reklama yoki kuzatuv uchun ishlatilmaydi. Tahlil yoki reklama cookie-laridan foydalanmaymiz.",
-      "Sahifalar Google Fonts shriftlarini yuklaydi, shuning uchun brauzeringiz Google serverlariga murojaat qiladi va ular IP-manzilingizni oladi."
+      "Sahifalar Google Fonts shriftlarini yuklaydi, shuning uchun brauzeringiz Google serverlariga murojaat qiladi va ular IP-manzilingizni oladi.",
+      "Brauzeringiz yorugʻ yoki qorongʻi mavzu tanlovingizni qurilmangizda ham eslab qoladi (local storage). U bizga yuborilmaydi."
      ]
     },
     {

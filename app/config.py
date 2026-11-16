@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_DIR = BASE_DIR / "static"
 
 APP_NAME = "Nexuz"
-APP_VERSION = "0.6.0"
+APP_VERSION = "0.7.0"
 
 # Public address of the site. Used in canonical links, sitemap.xml and social previews.
 # When you buy a domain, set the SITE_URL environment variable on Render.
@@ -38,8 +38,8 @@ def accounts_storage_ok() -> bool:
 #   per_day: how many successful PDF operations per day (None = no limit)
 #   max_mb:  biggest single file. Render free has 512 MB RAM, so keep Premium modest.
 PLANS = {
-    "guest":   {"per_day": 5,    "max_mb": 10},   # not signed in (counted by IP address)
-    "free":    {"per_day": 25,   "max_mb": 25},   # free account
+    "guest":   {"per_day": 1,    "max_mb": 10},   # not signed in (counted by IP address)
+    "free":    {"per_day": 5,    "max_mb": 25},   # free account
     "premium": {"per_day": None, "max_mb": 50},   # paid account
 }
 MAX_UPLOAD_MB = max(p["max_mb"] for p in PLANS.values())   # absolute ceiling
@@ -88,3 +88,7 @@ def payment_providers() -> list[str]:
 GOOGLE_SITE_VERIFICATION = os.getenv("GOOGLE_SITE_VERIFICATION", "")
 
 LEGAL_UPDATED = {"uz": "14-noyabr 2026", "ru": "14 ноября 2026", "en": "14 November 2026"}
+
+# Uzbek converter: reading text out of an uploaded file
+UZBEK_FILE_MAX_PAGES = 100        # PDF pages we read
+UZBEK_FILE_MAX_CHARS = 200_000    # characters we convert

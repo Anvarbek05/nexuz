@@ -181,3 +181,12 @@ def unlock_pdf(data: bytes, password: str) -> bytes:
     if not doc.authenticate(password):
         raise PdfToolError("Wrong password", "wrong_pdf_password")
     return doc.tobytes(encryption=fitz.PDF_ENCRYPT_NONE, garbage=3, deflate=True)
+
+
+def extract_text(data: bytes, name: str, max_pages: int) -> tuple[str, int]:
+    """Read the text of a PDF (not scanned images). Returns (text, number of pages)."""
+    doc = open_pdf(data, name)
+    if doc.page_count > max_pages:
+        raise PdfToolError(f"Up to {max_pages} pages are supported", "too_many_pages", max=max_pages, total=doc.page_count)
+    pages = [page.get_text("text").strip() for page in doc]
+    return "\n\n".join(p for p in pages if p), doc.page_count

@@ -3,7 +3,7 @@
 {% block content %}
 <section class="hero">
   <div class="container hero__grid">
-    <div>
+    <div class="hero__text">
       <h1>{{ ui.hero_title }}</h1>
       <p class="hero__lead">{{ ui.hero_lead }}</p>
       <div class="hero__actions">
@@ -11,19 +11,19 @@
         <a class="btn btn--ghost" href="#tools">{{ ui.cta_secondary }}</a>
       </div>
     </div>
-    <svg class="hero__art" viewBox="0 0 360 300" aria-hidden="true">
-      <rect x="40" y="46" width="170" height="220" rx="12" fill="#CDEBE8" transform="rotate(-8 125 156)"/>
-      <rect x="70" y="30" width="170" height="220" rx="12" fill="#9FD6D1" transform="rotate(-2 155 140)"/>
-      <rect x="110" y="24" width="170" height="220" rx="12" fill="#fff" stroke="#10243E" stroke-width="2.5" transform="rotate(5 195 134)"/>
+    <div class="hero__stage"><svg class="hero__art" viewBox="0 0 360 300" aria-hidden="true">
+      <rect x="40" y="46" width="170" height="220" rx="12" style="fill:var(--art-1)" transform="rotate(-8 125 156)"/>
+      <rect x="70" y="30" width="170" height="220" rx="12" style="fill:var(--art-2)" transform="rotate(-2 155 140)"/>
+      <rect x="110" y="24" width="170" height="220" rx="12" style="fill:var(--art-page);stroke:var(--ink)" stroke-width="2.5" transform="rotate(5 195 134)"/>
       <g transform="rotate(5 195 134)">
-        <rect x="132" y="50" width="52" height="24" rx="6" fill="#E4A11B"/>
-        <text x="158" y="67" text-anchor="middle" font-family="Onest, sans-serif" font-weight="600" font-size="13" fill="#10243E">PDF</text>
-        <rect x="132" y="96" width="126" height="8" rx="4" fill="#DDE3E8"/>
-        <rect x="132" y="116" width="110" height="8" rx="4" fill="#DDE3E8"/>
-        <rect x="132" y="136" width="120" height="8" rx="4" fill="#DDE3E8"/>
-        <rect x="132" y="170" width="70" height="46" rx="6" fill="#DDF1EF"/>
+        <rect x="132" y="50" width="52" height="24" rx="6" style="fill:var(--accent)"/>
+        <text x="158" y="67" text-anchor="middle" font-family="Onest, sans-serif" font-weight="600" font-size="13" style="fill:#10243e">PDF</text>
+        <rect x="132" y="96" width="126" height="8" rx="4" style="fill:var(--line)"/>
+        <rect x="132" y="116" width="110" height="8" rx="4" style="fill:var(--line)"/>
+        <rect x="132" y="136" width="120" height="8" rx="4" style="fill:var(--line)"/>
+        <rect x="132" y="170" width="70" height="46" rx="6" style="fill:var(--brand-tint)"/>
       </g>
-    </svg>
+    </svg></div>
   </div>
 </section>
 

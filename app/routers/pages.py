@@ -170,7 +170,12 @@ def pricing_page(request: Request, lang: str):
     plans = []
     for key in ("guest", "free", "premium"):
         rules, words = PLANS[key], p["plans"][key]
-        ops = p["feat_ops_unlimited"] if rules["per_day"] is None else p["feat_ops"].format(n=rules["per_day"])
+        if rules["per_day"] is None:
+            ops = p["feat_ops_unlimited"]
+        elif rules["per_day"] == 1:
+            ops = p["feat_ops_one"]
+        else:
+            ops = p["feat_ops"].format(n=rules["per_day"])
         price, note = words["price"], words["note"]
         if key == "premium" and providers:       # payments are switched on: show the real price
             price = p["price_on"].format(price=f"{PREMIUM_PRICE_SUM:,}".replace(",", " "), days=PREMIUM_DAYS)
@@ -216,11 +221,11 @@ def tool_page(request: Request, lang: str, slug: str):
     }
     common = dict(tool=tool, text=text, steps=text["steps"], related=related_cards(lang, tool))
     title = f"{text['seo_title']} | {APP_NAME}"
-    if tool.get("kind") == "text":
-        return render(request, "uzbek.html", lang, slug, title, text["seo_desc"], jsonld,
-                      {"page": "uzbek", "ui": loc["ui"]}, **common)
     user = current_user(request)
     account = limits.Ticket(user, client_ip(request)).summary()
+    if tool.get("kind") == "text":
+        return render(request, "uzbek.html", lang, slug, title, text["seo_desc"], jsonld,
+                      {"page": "uzbek", "ui": loc["ui"], "account": account}, user=user, **common)
     client = {"page": "tool", "ui": loc["ui"], "tool": client_tool(tool, text), "account": account}
     return render(request, "tool.html", lang, slug, title, text["seo_desc"], jsonld, client, user=user,
                   account=account, **common)

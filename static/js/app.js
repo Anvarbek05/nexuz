@@ -45,23 +45,23 @@
     }));
   }
 
+  // "3 of 5 uses left today. Create a free account for more."
+  function renderQuota(q) {
+    const el = $("#quota");
+    if (!el || !q) return;
+    el.replaceChildren();
+    if (q.per_day === null) { el.textContent = ui.quota_unlimited; return; }
+    el.append(t("quota_left", { left: q.left, limit: q.per_day }) + " ");
+    const link = document.createElement("a");
+    link.href = "/" + N.lang + (q.plan === "guest" ? "/register" : "/pricing");
+    link.textContent = q.plan === "guest" ? ui.quota_register : ui.quota_premium;
+    el.append(link);
+  }
+
   // ---------------- file tools ----------------
   function initTool(tool) {
     let files = [];
     let maxMb = (N.account && N.account.max_mb) || 25;   // biggest file for this visitor's plan
-
-    // "3 of 5 uses left today. Create a free account for more."
-    function renderQuota(q) {
-      const el = $("#quota");
-      if (!el || !q) return;
-      el.replaceChildren();
-      if (q.per_day === null) { el.textContent = ui.quota_unlimited; return; }
-      el.append(t("quota_left", { left: q.left, limit: q.per_day }) + " ");
-      const link = document.createElement("a");
-      link.href = "/" + N.lang + (q.plan === "guest" ? "/register" : "/pricing");
-      link.textContent = q.plan === "guest" ? ui.quota_register : ui.quota_premium;
-      el.append(link);
-    }
 
     async function refreshQuota() {
       try {
@@ -286,12 +286,58 @@
       status(ui.uz_copied);
     }
 
-    $("#uz-in").addEventListener("input", convert);
-    $("#uz-target").addEventListener("change", convert);
+    // ---- upload a PDF or TXT file: the server sends the text in all 3 alphabets ----
+    let fileTexts = null;
+    let fileName = "text";
+
+    async function uploadFile(file) {
+      status(ui.uz_file_reading);
+      const form = new FormData();
+      form.append("file", file);
+      try {
+        const res = await api("/api/uzbek/convert-file", { method: "POST", body: form });
+        if (!res.ok) throw new Error(await errorText(res));
+        const data = await res.json();
+        fileTexts = data.texts;
+        fileName = file.name.replace(/\.[^.]+$/, "");
+        $("#uz-in").value = "";
+        $("#uz-out").value = fileTexts[$("#uz-target").value];
+        $("#uz-detected").textContent = t("uz_detected", { script: ui.uz_scripts[data.source] });
+        status(t("uz_file_done", { chars: data.chars, name: file.name }));
+        try {
+          const me = await (await api("/api/me")).json();
+          renderQuota(me.quota);
+        } catch (_) {}
+      } catch (err) {
+        status(err instanceof TypeError ? ui.acc_network : err.message, true);
+      }
+    }
+
+    function download() {
+      const text = $("#uz-out").value;
+      if (!text) { status(ui.uz_nothing, true); return; }
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(new Blob([text], { type: "text/plain;charset=utf-8" }));
+      link.download = fileName + "-" + $("#uz-target").value + ".txt";
+      document.body.append(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+    }
+
+    $("#uz-file").addEventListener("change", e => { if (e.target.files[0]) uploadFile(e.target.files[0]); e.target.value = ""; });
+    $("#uz-download").addEventListener("click", download);
+    renderQuota(N.account);
+
+    $("#uz-in").addEventListener("input", () => { fileTexts = null; convert(); });
+    $("#uz-target").addEventListener("change", () => {
+      if (fileTexts && !$("#uz-in").value) $("#uz-out").value = fileTexts[$("#uz-target").value];
+      else convert();
+    });
     $("#uz-copy").addEventListener("click", copy);
-    $("#uz-example").addEventListener("click", () => { $("#uz-in").value = ui.uz_example_text; convert(); });
+    $("#uz-example").addEventListener("click", () => { fileTexts = null; $("#uz-in").value = ui.uz_example_text; convert(); });
     $("#uz-clear").addEventListener("click", () => {
-      $("#uz-in").value = ""; $("#uz-out").value = ""; $("#uz-detected").textContent = ""; status("");
+      fileTexts = null; $("#uz-in").value = ""; $("#uz-out").value = ""; $("#uz-detected").textContent = ""; status("");
       $("#uz-in").focus();
     });
   }
@@ -364,6 +410,27 @@
       }
     }));
   }
+
+  // ---------------- light / dark theme ----------------
+  function initTheme() {
+    const button = $("#theme-toggle");
+    if (!button) return;
+    const apply = theme => {
+      document.documentElement.dataset.theme = theme;
+      const label = theme === "dark" ? button.dataset.toLight : button.dataset.toDark;
+      button.setAttribute("aria-label", label);
+      button.title = label;
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.content = theme === "dark" ? "#0c1522" : "#0b7a75";
+    };
+    apply(document.documentElement.dataset.theme || "light");
+    button.addEventListener("click", () => {
+      const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      apply(next);
+      try { localStorage.setItem("nexuz-theme", next); } catch (_) {}
+    });
+  }
+  initTheme();
 
   const pages = {
     home: initHome, tool: () => initTool(N.tool), uzbek: initUzbek,

@@ -124,7 +124,14 @@
   "quota_left": "{left} of {limit} uses left today.",
   "quota_unlimited": "No daily limit.",
   "quota_register": "Create a free account for more.",
-  "quota_premium": "See the plans"
+  "quota_premium": "See the plans",
+  "uz_upload": "Upload PDF or TXT",
+  "uz_upload_help": "A PDF with real text or a .txt file. The converted text appears on the right. Scanned PDFs (pictures) do not work yet.",
+  "uz_download": "Download as .txt",
+  "uz_file_reading": "Reading the file…",
+  "uz_file_done": "Done: {chars} characters from “{name}”.",
+  "theme_to_dark": "Switch to dark theme",
+  "theme_to_light": "Switch to light theme"
  },
  "tools": {
   "merge": {
@@ -353,7 +360,10 @@
   "no_password_set": "This PDF has no password to remove.",
   "wrong_pdf_password": "Wrong password.",
   "pay_provider_off": "Payment with this provider is not available right now.",
-  "accounts_unavailable": "Creating accounts is not available yet. Please try again later."
+  "accounts_unavailable": "Creating accounts is not available yet. Please try again later.",
+  "uz_file_type": "Please upload a PDF or a TXT file.",
+  "pdf_no_text": "{name} has no text to read. It looks like a scanned PDF (only pictures). Scanned PDFs are not supported yet.",
+  "uz_text_too_long": "The file has too much text. The limit is {max} characters."
  },
  "pricing": {
   "title": "Plans and limits",
@@ -397,7 +407,8 @@
   "note": "Limits count successful operations. The day ends at midnight in Tashkent. Guests are counted by IP address, so people on the same network share one counter. Limits may change.",
   "price_on": "{price} UZS for {days} days",
   "pay_with": "Pay with {provider}",
-  "need_login": "Sign in to buy Premium"
+  "need_login": "Sign in to buy Premium",
+  "feat_ops_one": "1 operation per day"
  },
  "legal": {
   "updated_label": "Last updated:",
@@ -437,7 +448,8 @@
      "h": "Cookies and fonts",
      "p": [
       "Nexuz sets one cookie, named nexuz_session, only after you sign in. It keeps you signed in and is not used for advertising or tracking. We do not use analytics or advertising cookies.",
-      "Pages load fonts from Google Fonts, so your browser contacts Google servers, which receive your IP address."
+      "Pages load fonts from Google Fonts, so your browser contacts Google servers, which receive your IP address.",
+      "Your browser also remembers your light or dark theme choice on your device (local storage). It is never sent to us."
      ]
     },
     {
